@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 6 Months Anniversary!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #ffe6e6;
+            color: #d63384;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* --- หน้า Welcome --- */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffccdd;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .btn-open {
+            background-color: #ff4d94;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .btn-open:hover { transform: scale(1.1); background-color: #ff1a75; }
+        .btn-open:active { transform: scale(0.95); }
+
+        /* --- หน้าเนื้อหาหลัก --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 350px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { margin: 10px 0; font-size: 1.5rem; }
+
+        .photo-frame {
+            width: 180px;
+            height: 180px;
+            background-color: #ddd;
+            border-radius: 50%;
+            margin: 10px auto;
+            overflow: hidden;
+            border: 5px solid #ff99cc;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .message {
+            line-height: 1.5;
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        /* --- ส่วนแสดงเนื้อเพลงแบบ Fade --- */
+        #lyric-container {
+            height: 60px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            padding: 0 10px;
+        }
+
+        .lyric-text {
+            font-size: 1.1rem;
+            color: #ff6699;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0; 
+            transform: translateY(10px); 
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .lyric-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timer {
+            font-size: 1rem;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #ff6699;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mp3">
+    </audio>
+
+    <div id="welcome-screen">
+        <h1>เค้ามีอะไรจะบอก</h1>
+        <p style="margin-bottom: 20px;">ลองกดปุ่มดูสิ</p>
+        <button class="btn-open" onclick="openGift()">
+            เปิดดูเลย ❤️
+        </button>
+    </div>
+
+    <div id="main-content">
+        <div class="container">
+            <h1>Happy 6 Months</h1>
+            
+            <div class="photo-frame">
+                <img src="mylove.jpg" alt="Our Photo"> 
+            </div>
+
+            <div class="message">
+                <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>
+                รักเธอนะคนเก่ง</p>
+            </div>
+
+            <div id="lyric-container">
+                <div id="lyric-text" class="lyric-text"></div>
+            </div>
+
+            <div class="timer" id="timer">กำลังคำนวณ...</div>
+        </div>
+    </div>
+
+<script>
+        // --- เนื้อเพลงพร้อมกำหนดเวลาเอง (ms) ---
+        const lyricsWithTiming = [
+            { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 }, 
+            { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500}, 
+            { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 }, 
+            { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 } 
+        ];
+
+        let lyricLine = 0; 
+
+        function openGift() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const mainContent = document.getElementById('main-content');
+            const music = document.getElementById('bg-music');
+
+            // 1. เล่นเพลงทันที
+            music.volume = 0.5;
+            music.play().catch(error => { console.log("Audio play failed"); });
+            
+            // 2. ซ่อนหน้า Welcome และแสดงหน้าหลักทันที
+            welcomeScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                mainContent.style.display = 'flex';
+                
+                // 3. Fade In หน้าหลัก
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                }, 50);
+
+                // 4. สั่งให้เนื้อเพลงเริ่มทำงานทันทีพร้อมเพลง (ไม่มีหน่วงเวลาเริ่มต้น)
+                startLyrics(); 
+            }, 1000); // 1000ms คือเวลา Fade Out ของ welcomeScreen
+        }
+
+        // ฟังก์ชันจัดการเนื้อเพลง
+        function startLyrics() {
+            const lyricElement = document.getElementById('lyric-text');
+            const music = document.getElementById('bg-music');
+
+            lyricLine = 0; // รีเซ็ตเคาน์เตอร์บรรทัดทุกครั้งที่เริ่มวนลูป
+
+            function showLyric(index) {
+                
+                // 1. เช็คว่าแสดงครบทุกท่อนแล้ว
+                if (index >= lyricsWithTiming.length) {
+                    
+                    // Fade Out ท่อนสุดท้าย
+                    lyricElement.classList.remove('visible');
+                    
+                    // รอนาน 1 วินาที เพื่อให้ Fade Out เสร็จ
+                    setTimeout(() => {
+                        lyricElement.innerText = ''; // เคลียร์ข้อความ
+                        
+                        // *** ดักฟังเหตุการณ์เมื่อเพลงวนลูปใหม่ ***
+                        function restartMonitor() {
+                            // ถ้า audio.currentTime อยู่ในช่วง 0.05 ถึง 0.5 วินาที แสดงว่าเพลงเพิ่งวนลูป
+                            if (music.currentTime > 0.05 && music.currentTime < 0.5) { 
+                                // เมื่อจับสัญญาณได้ ให้หยุดดักฟัง
+                                music.removeEventListener('timeupdate', restartMonitor);
+                                
+                                // *** เพิ่มหน่วงเวลา 500ms (0.5 วิ) ก่อนเรียก startLyrics() ***
+                                setTimeout(() => {
+                                    startLyrics(); 
+                                }, 500); 
+                            }
+                        }
+                        
+                        // เริ่มดักฟังตำแหน่งเพลง
+                        music.addEventListener('timeupdate', restartMonitor);
+                        
+                    }, 1000); // 1000 ms คือระยะเวลา Fade Out
+
+                    return;
+                }
+
+                // ข้อมูลท่อนปัจจุบัน
+                const currentLine = lyricsWithTiming[index];
+                
+                // 2. แสดงท่อนใหม่ (Fade In)
+                lyricElement.innerText = currentLine.text;
+                
+                // บังคับ CSS Reflow
+                lyricElement.offsetHeight; 
+                
+                lyricElement.classList.add('visible');
+
+                // 3. กำหนดเวลาที่จะเริ่ม Fade Out เพื่อไปท่อนถัดไป
+                setTimeout(() => {
+                    // Fade Out ก่อน
+                    lyricElement.classList.remove('visible');
+                    
+                    // รอ 1 วินาทีให้ Fade Out เสร็จ แล้วเรียกท่อนถัดไป
+                    setTimeout(() => {
+                        showLyric(index + 1); 
+                    }, 1000); // 1 วินาที คือระยะเวลา Fade Out
+
+                }, currentLine.duration); // ระยะเวลาที่ท่อนนี้จะค้างบนจอ
+            }
+            
+            // เริ่มแสดงท่อนแรกทันที
+            showLyric(lyricLine); 
+        }
+
+        // --- ตั้งค่าวันครบรอบ ---
+        const startDate = new Date(2025, 5, 25).getTime(); 
+
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = 
+                days + " วัน " + hours + " ชม. " + minutes + " น. " + seconds + " วิ";
+        }, 1000);
+    </script>
