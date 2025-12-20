@@ -41,11 +41,17 @@ html, body {
 .pin-container input {
     width: 45px;
     height: 55px;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     text-align: center;
     border-radius: 10px;
     border: 2px solid #ff4d94;
     outline: none;
+}
+
+/* ● แทนตัวเลข */
+.pin-container input {
+    -webkit-text-security: disc;
+    text-security: disc;
 }
 
 .pin-container input:focus {
@@ -112,7 +118,7 @@ html, body {
     .pin-container input {
         width: 42px;
         height: 52px;
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
 }
 </style>
@@ -124,18 +130,18 @@ html, body {
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
-<!-- หน้า PIN -->
+<!-- หน้าใส่ PIN -->
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
     <p>ใส่รหัส 6 ตัว ❤️</p>
 
     <div class="pin-container">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
+        <input type="text" maxlength="1" inputmode="numeric">
     </div>
 
     <p id="error-text"></p>
@@ -163,7 +169,7 @@ const inputs = document.querySelectorAll(".pin-container input");
 
 inputs[0].focus();
 
-/* คุมการพิมพ์ PIN */
+/* คุมการกรอก PIN */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, '');
@@ -244,7 +250,7 @@ setInterval(() => {
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 
-/* ปิด gesture */
+/* ปิด pinch / zoom */
 document.addEventListener("gesturestart", e => e.preventDefault());
 document.addEventListener("touchmove", e => e.preventDefault(), { passive:false });
 </script>
