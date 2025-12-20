@@ -1,149 +1,3 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Happy 6 Months Anniversary!</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
-
-<style>
-html, body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-    touch-action: none;
-    font-family: 'Sarabun', sans-serif;
-    background: #ffe6e6;
-    color: #d63384;
-}
-
-#welcome-screen {
-    position: fixed;
-    inset: 0;
-    background: #ffccdd;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 1000;
-    transition: opacity 1s;
-}
-
-.pin-container {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.pin-container input {
-    width: 45px;
-    height: 55px;
-    font-size: 1.8rem;
-    text-align: center;
-    border-radius: 10px;
-    border: 2px solid #ff4d94;
-    outline: none;
-}
-
-#error-text {
-    color: red;
-    margin-top: 10px;
-}
-
-#main-content {
-    display: none;
-    opacity: 0;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1.5s;
-}
-
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    width: 350px;
-    max-width: 90%;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,.1);
-}
-
-.photo-frame {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid #ff99cc;
-    margin: 15px auto;
-}
-
-.photo-frame video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.lyric-text {
-    font-weight: bold;
-    color: #ff6699;
-    opacity: 0;
-    transition: 1s;
-}
-
-.lyric-text.visible {
-    opacity: 1;
-}
-
-.timer {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #ff6699;
-}
-</style>
-</head>
-
-<body>
-
-<audio id="bg-music" loop>
-    <source src="song.mp3" type="audio/mp3">
-</audio>
-
-<!-- หน้า PIN -->
-<div id="welcome-screen">
-    <h1>เค้ามีอะไรจะบอก</h1>
-    <p>ใส่รหัส 6 ตัว ❤️</p>
-
-    <div class="pin-container">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="0">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="1">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="2">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="3">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="4">
-        <input type="password" maxlength="1" inputmode="numeric" data-index="5">
-    </div>
-
-    <p id="error-text"></p>
-</div>
-
-<!-- เนื้อหาหลัก -->
-<div id="main-content">
-    <div class="container">
-        <h1>Happy 6 Months</h1>
-
-        <div class="photo-frame">
-            <video src="mylove.mp4" autoplay loop muted playsinline></video>
-        </div>
-
-        <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
-
-        <div id="lyric-text" class="lyric-text"></div>
-        <div class="timer" id="timer"></div>
-    </div>
-</div>
 <script>
 /* 🔐 รหัส */
 const correctPassword = "250625";
@@ -153,7 +7,7 @@ const music = document.getElementById("bg-music");
 /* โฟกัสช่องแรก */
 inputs[0].focus();
 
-/* เด้งช่อง PIN */
+/* PIN เด้งช่อง */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, "");
@@ -187,6 +41,7 @@ function openGift() {
     const main = document.getElementById("main-content");
 
     music.volume = 0.5;
+    music.currentTime = 0;
     music.play();
 
     welcome.style.opacity = 0;
@@ -194,25 +49,27 @@ function openGift() {
         welcome.style.display = "none";
         main.style.display = "flex";
         setTimeout(() => main.style.opacity = 1, 50);
-        startLyrics(); // เริ่มเนื้อร้องรอบแรก
+        startLyrics();
     }, 1000);
 }
 
 /* 🎵 เนื้อร้อง + timing */
 const lyricsWithTiming = [
     { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4300 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
+    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4400 },
     { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 },
     { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
 ];
 
 let lyricIndex = 0;
-let lyricTimeout = null;
+let lyricTimeout;
 
 /* เล่นเนื้อร้อง 1 รอบ */
 function startLyrics() {
-    const el = document.getElementById("lyric-text");
+    clearTimeout(lyricTimeout);
     lyricIndex = 0;
+
+    const el = document.getElementById("lyric-text");
 
     function showNext() {
         if (lyricIndex >= lyricsWithTiming.length) return;
@@ -230,8 +87,10 @@ function startLyrics() {
     showNext();
 }
 
-/* 🔁 เมื่อเพลงจบ → ค่อยวนเนื้อร้องใหม่ */
+/* 🔁 เพลงจบ → วนเพลง + เนื้อร้องพร้อมกัน */
 music.addEventListener("ended", () => {
+    music.currentTime = 0;
+    music.play();
     startLyrics();
 });
 
@@ -246,7 +105,3 @@ setInterval(() => {
         Math.floor(d % 60000 / 1000) + " วิ";
 }, 1000);
 </script>
-
-
-</body>
-</html>
