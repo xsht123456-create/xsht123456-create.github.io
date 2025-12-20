@@ -201,11 +201,11 @@ function openGift() {
         welcome.style.display = "none";
         main.style.display = "flex";
         setTimeout(() => main.style.opacity = 1, 50);
-        startLyrics();   // 👈 เรียกเนื้อเพลงตรงนี้
+        startLyrics(); // 🎵 เริ่มเนื้อเพลง
     }, 1000);
 }
 
-/* 🎵 เนื้อเพลง + timing (ของคุณเดิม) */
+/* 🎵 เนื้อเพลง + timing (วนลูปตลอด) */
 const lyricsWithTiming = [
     { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
     { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
@@ -213,24 +213,26 @@ const lyricsWithTiming = [
     { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
 ];
 
+let lyricIndex = 0;
+let lyricTimeout = null;
+
 function startLyrics() {
     const el = document.getElementById("lyric-text");
-    let i = 0;
 
-    function showNext() {
-        if (i >= lyricsWithTiming.length) return;
-
-        el.innerText = lyricsWithTiming[i].text;
+    function showLyric() {
+        el.innerText = lyricsWithTiming[lyricIndex].text;
         el.classList.add("visible");
 
-        setTimeout(() => {
+        lyricTimeout = setTimeout(() => {
             el.classList.remove("visible");
-            i++;
-            setTimeout(showNext, 1000);
-        }, lyricsWithTiming[i].duration);
+
+            lyricIndex = (lyricIndex + 1) % lyricsWithTiming.length;
+
+            setTimeout(showLyric, 1000);
+        }, lyricsWithTiming[lyricIndex].duration);
     }
 
-    showNext();
+    showLyric();
 }
 
 /* ⏱ ตัวนับเวลา */
@@ -244,6 +246,7 @@ setInterval(() => {
         Math.floor(d % 60000 / 1000) + " วิ";
 }, 1000);
 </script>
+
 
 
 </body>
