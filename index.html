@@ -7,16 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --pink: #ff4d94;
-    --soft-pink: #fff0f6;
-}
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-}
+:root { --pink: #ff4d94; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
 
 body {
     margin: 0;
@@ -32,7 +24,6 @@ body {
     align-items: center;
 }
 
-/* ---------- screens ---------- */
 #welcome-screen, #main-content {
     position: absolute;
     inset: 0;
@@ -44,150 +35,71 @@ body {
     padding: 20px;
 }
 
-#welcome-screen {
-    background: linear-gradient(180deg, #ffccdd, #ffe6e6);
-    z-index: 10;
-}
+#welcome-screen { background: linear-gradient(180deg, #ffccdd, #ffe6e6); z-index: 10; }
+#welcome-screen.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
 
-#welcome-screen.hide {
-    opacity: 0;
-    transform: scale(1.05);
-    pointer-events: none;
-}
-
-/* ---------- password ---------- */
 #password-input {
-    width: 220px;
+    width: 200px;
     padding: 14px;
     text-align: center;
     border-radius: 30px;
     border: 2px solid var(--pink);
     outline: none;
     letter-spacing: 8px;
-    font-size: 20px;
+    transition: transform .25s, box-shadow .25s;
+    font-size: 20px; /* ป้องกัน iOS ซูม */
     height: 60px;
-    transition: box-shadow .25s, transform .25s;
 }
 
-#password-input:focus {
-    box-shadow: 0 0 0 4px rgba(255,77,148,.25);
-}
-
-.shake {
-    animation: shake .4s;
-}
-
+#password-input:focus { box-shadow: 0 0 0 4px rgba(255,77,148,.2); }
+.shake { animation: shake .4s; }
 @keyframes shake {
-    0%,100% { transform: translateX(0); }
+    0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
     50% { transform: translateX(6px); }
     75% { transform: translateX(-4px); }
 }
 
-/* ---------- button ---------- */
 .btn-open {
-    margin-top: 22px;
-    padding: 14px 44px;
+    margin-top: 20px;
+    padding: 12px 40px;
     font-size: 1.2rem;
     border-radius: 50px;
     border: none;
-    background: linear-gradient(135deg, #ff4d94, #ff7ab3);
+    background: var(--pink);
     color: white;
     cursor: pointer;
-    box-shadow: 0 12px 30px rgba(255,77,148,.4);
-    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 10px 25px rgba(255,77,148,.35);
 }
 
-.btn-open:active {
-    transform: scale(.96);
-    box-shadow: 0 6px 18px rgba(255,77,148,.35);
-}
-
-/* ---------- main content ---------- */
-#main-content {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(.96);
-}
-
-#main-content.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-}
+#main-content { opacity: 0; pointer-events: none; transform: scale(.96); }
+#main-content.show { opacity: 1; pointer-events: auto; transform: scale(1); }
 
 .container {
     width: 100%;
-    max-width: 350px;
-    padding: 28px 25px;
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(10px);
-    border-radius: 32px;
+    max-width: 340px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
     text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,.12);
+    box-shadow: 0 20px 40px rgba(0,0,0,.1);
 }
 
-/* ---------- photo ---------- */
 .photo-frame {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     overflow: hidden;
-    margin: 10px auto 20px;
-    border: 6px solid white;
-    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    margin: 0 auto 20px;
+    border: 5px solid white;
 }
 
-.photo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ---------- lyrics ---------- */
-.lyric-text {
-    min-height: 52px;
-    margin: 18px 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #ff6699;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity .8s ease, transform .8s ease;
-}
-
-.lyric-text.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ---------- timer ---------- */
-.timer {
-    margin-top: 16px;
-    font-size: .9rem;
-    background: var(--soft-pink);
-    padding: 12px;
-    border-radius: 16px;
-    color: #ff4d94;
-    line-height: 1.5;
-}
-
-/* ---------- floating hearts ---------- */
-.heart {
-    position: fixed;
-    bottom: -20px;
-    font-size: 20px;
-    animation: floatUp 6s linear infinite;
-    opacity: .6;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity:.7; }
-    100% { transform: translateY(-120vh) scale(1.4); opacity:0; }
-}
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+.lyric-text { min-height: 50px; margin: 15px 0; font-size: 1.1rem; font-weight: bold; color: #ff6699; opacity: 0; transition: opacity 0.8s; }
+.lyric-text.visible { opacity: 1; }
+.timer { margin-top: 15px; font-size: 0.9rem; background: #fff0f5; padding: 10px; border-radius: 15px; color: #ff4d94; }
 </style>
 </head>
-
 <body>
 
 <audio id="bg-music" loop>
@@ -196,22 +108,23 @@ body {
 
 <div id="welcome-screen">
     <h1>ใส่รหัสผ่าน ❤️</h1>
-    <input id="password-input"
-           type="password"
-           inputmode="numeric"
-           maxlength="6"
-           placeholder="••••••">
-    <button class="btn-open" onclick="checkPassword()">เปิดของขวัญ</button>
+    <input id="password-input" 
+           type="password" 
+           inputmode="numeric" 
+           maxlength="6" 
+           placeholder="••••••"
+           autocomplete="off">
+    <button class="btn-open" onclick="checkPassword()">ยืนยัน</button>
     <p id="error-text"></p>
 </div>
 
 <div id="main-content">
     <div class="container">
-        <h2 style="margin-top:0">Happy 6 Months 💕</h2>
+        <h2 style="margin-top:0">Happy 6 Months</h2>
         <div class="photo-frame">
             <img src="mylove.jpg" alt="Love">
         </div>
-        <p>ขอบคุณที่อยู่ข้างกันมาตลอดนะ<br>รักเธอมากจริง ๆ ❤️</p>
+        <p>ขอบคุณที่อยู่ข้างกันมาตลอดนะ<br>รักเธอมากครับ ❤️</p>
         <div id="lyric-text" class="lyric-text"></div>
         <div class="timer" id="timer"></div>
     </div>
@@ -222,9 +135,11 @@ const correctPassword = "250625";
 
 function checkPassword() {
     const input = document.getElementById("password-input");
+    const error = document.getElementById("error-text");
     if (input.value === correctPassword) {
         openGift();
     } else {
+        document.getElementById("error-text").innerText = "รหัสไม่ถูกต้องนะครับ";
         input.classList.add("shake");
         input.value = "";
         setTimeout(() => input.classList.remove("shake"), 400);
@@ -234,12 +149,11 @@ function checkPassword() {
 function openGift() {
     const music = document.getElementById("bg-music");
     music.volume = 0.5;
-    music.play().catch(()=>{});
+    music.play().catch(() => {});
     document.getElementById("welcome-screen").classList.add("hide");
     setTimeout(() => {
         document.getElementById("main-content").classList.add("show");
         startLyrics();
-        startHearts();
     }, 900);
 }
 
@@ -253,39 +167,26 @@ const lyricsWithTiming = [
 function startLyrics() {
     const el = document.getElementById("lyric-text");
     let i = 0;
-    (function loop() {
+    function show() {
+        if (i >= lyricsWithTiming.length) i = 0;
         el.innerText = lyricsWithTiming[i].text;
         el.classList.add("visible");
         setTimeout(() => {
             el.classList.remove("visible");
-            i = (i + 1) % lyricsWithTiming.length;
-            setTimeout(loop, 600);
+            setTimeout(() => { i++; show(); }, 500);
         }, lyricsWithTiming[i].duration);
-    })();
+    }
+    show();
 }
 
-function startHearts() {
-    setInterval(() => {
-        const h = document.createElement("div");
-        h.className = "heart";
-        h.innerText = "❤️";
-        h.style.left = Math.random()*100 + "vw";
-        h.style.animationDuration = (4 + Math.random()*3) + "s";
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 7000);
-    }, 800);
-}
-
-const startDate = new Date(2025,5,25).getTime();
+const startDate = new Date(2025, 5, 25).getTime(); 
 setInterval(() => {
-    const d = Date.now() - startDate;
-    document.getElementById("timer").innerText =
-        `${Math.floor(d/86400000)} วัน `
-      + `${Math.floor(d%86400000/3600000)} ชม. `
-      + `${Math.floor(d%3600000/60000)} นาที `
-      + `${Math.floor(d%60000/1000)} วินาที`;
+    const d = new Date().getTime() - startDate;
+    document.getElementById("timer").innerText = 
+        Math.floor(d/86400000)+" วัน "+Math.floor(d%86400000/3600000)+" ชม. "+
+        Math.floor(d%3600000/60000)+" น. "+Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 </script>
-
 </body>
 </html>
+ช่วยปรับและตกแต่ง 
