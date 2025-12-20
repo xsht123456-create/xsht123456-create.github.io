@@ -1,138 +1,121 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- 🔒 ปิดซูม + เหมาะกับมือถือ -->
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy 6 Months Anniversary!</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <title>Happy 6 Months Anniversary!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    touch-action: none;
+    font-family: 'Sarabun', sans-serif;
+    background: #ffe6e6;
+    color: #d63384;
+}
 
-    <style>
-        /* 🔒 ล็อกการเลื่อน + gesture */
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-            touch-action: none;
-        }
+#welcome-screen {
+    position: fixed;
+    inset: 0;
+    background: #ffccdd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1000;
+    transition: opacity 1s;
+}
 
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: #ffe6e6;
-            color: #d63384;
-        }
+.pin-container {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
 
-        #welcome-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #ffccdd;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 1s ease-in-out;
-            text-align: center;
-        }
+.pin-container input {
+    width: 45px;
+    height: 55px;
+    font-size: 1.6rem;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #ff4d94;
+    outline: none;
+}
 
-        .btn-open {
-            background-color: #ff4d94;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.3rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);
-            font-family: 'Sarabun', sans-serif;
-        }
+.pin-container input:focus {
+    border-color: #ff1f7a;
+}
 
-        #password-input {
-            padding: 12px;
-            font-size: 1.3rem;
-            text-align: center;
-            border-radius: 30px;
-            border: 2px solid #ff4d94;
-            outline: none;
-            width: 180px;
-            margin-bottom: 15px;
-            letter-spacing: 6px;
-        }
+#error-text {
+    color: red;
+    margin-top: 10px;
+}
 
-        #error-text {
-            color: red;
-            margin-top: 10px;
-        }
+#main-content {
+    display: none;
+    opacity: 0;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1.5s;
+}
 
-        #main-content {
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            display: none;
-            height: 100vh;
-            width: 100vw;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,.1);
+}
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 350px;
-            max-width: 90%;
-            text-align: center;
-        }
+.photo-frame {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #ff99cc;
+    margin: 15px auto;
+}
 
-        .photo-frame {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 5px solid #ff99cc;
-            margin: 15px auto;
-        }
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.lyric-text {
+    font-weight: bold;
+    color: #ff6699;
+    opacity: 0;
+    transition: 1s;
+}
 
-        .lyric-text {
-            font-size: 1.1rem;
-            color: #ff6699;
-            font-weight: bold;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: 1s;
-        }
+.lyric-text.visible {
+    opacity: 1;
+}
 
-        .lyric-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.timer {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ff6699;
+}
 
-        .timer {
-            margin-top: 10px;
-            font-weight: bold;
-            color: #ff6699;
-        }
-
-        /* 📱 มือถือ */
-        @media (max-width: 480px) {
-            h1 { font-size: 1.6rem; }
-            .container { padding: 20px; }
-            .photo-frame { width: 150px; height: 150px; }
-            .btn-open { font-size: 1.1rem; padding: 10px 24px; }
-            #password-input { font-size: 1.2rem; width: 160px; }
-            .lyric-text { font-size: 1rem; }
-        }
-    </style>
+@media (max-width:480px){
+    .pin-container input {
+        width: 42px;
+        height: 52px;
+        font-size: 1.4rem;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -141,21 +124,20 @@
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
-<!-- หน้าใส่รหัส -->
+<!-- หน้า PIN -->
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
     <p>ใส่รหัส 6 ตัว ❤️</p>
 
-    <!-- ✅ บังคับคีย์บอร์ดตัวเลข -->
-    <input
-        type="password"
-        id="password-input"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        maxlength="6"
-        placeholder="••••••">
+    <div class="pin-container">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+    </div>
 
-    <button class="btn-open" onclick="checkPassword()">ยืนยัน</button>
     <p id="error-text"></p>
 </div>
 
@@ -165,52 +147,56 @@
         <h1>Happy 6 Months</h1>
 
         <div class="photo-frame">
-            <img src="mylove.jpg" alt="My Love">
+            <img src="mylove.jpg">
         </div>
 
         <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
 
-        <div id="lyric-container">
-            <div id="lyric-text" class="lyric-text"></div>
-        </div>
-
+        <div id="lyric-text" class="lyric-text"></div>
         <div class="timer" id="timer"></div>
     </div>
 </div>
 
 <script>
-/* 🔐 ตั้งรหัส */
 const correctPassword = "250625";
+const inputs = document.querySelectorAll(".pin-container input");
 
-/* กันพิมพ์ที่ไม่ใช่ตัวเลข */
-const passInput = document.getElementById("password-input");
-passInput.addEventListener("input", () => {
-    passInput.value = passInput.value.replace(/\D/g, '');
+inputs[0].focus();
+
+/* คุมการพิมพ์ PIN */
+inputs.forEach((input, i) => {
+    input.addEventListener("input", () => {
+        input.value = input.value.replace(/\D/g, '');
+        if (input.value && i < inputs.length - 1) {
+            inputs[i + 1].focus();
+        }
+        checkPin();
+    });
+
+    input.addEventListener("keydown", e => {
+        if (e.key === "Backspace" && !input.value && i > 0) {
+            inputs[i - 1].focus();
+        }
+    });
 });
 
-function checkPassword() {
-    const error = document.getElementById("error-text");
-
-    if (passInput.value === correctPassword) {
-        error.innerText = "";
-        openGift();
-    } else {
-        error.innerText = "รหัสไม่ถูกต้อง 🥺";
+function checkPin() {
+    const pin = Array.from(inputs).map(i => i.value).join("");
+    if (pin.length === 6) {
+        if (pin === correctPassword) {
+            openGift();
+        } else {
+            document.getElementById("error-text").innerText = "รหัสไม่ถูกต้อง 🥺";
+            inputs.forEach(i => i.value = "");
+            inputs[0].focus();
+        }
     }
 }
-
-/* กด Enter ได้ */
-passInput.addEventListener("keyup", e => {
-    if (e.key === "Enter") checkPassword();
-});
 
 function openGift() {
     const welcome = document.getElementById("welcome-screen");
     const main = document.getElementById("main-content");
     const music = document.getElementById("bg-music");
-
-    document.body.style.position = "fixed";
-    document.body.style.width = "100%";
 
     music.volume = 0.5;
     music.play();
@@ -224,37 +210,33 @@ function openGift() {
     }, 1000);
 }
 
-/* 🎵 เนื้อเพลง */
-const lyricsWithTiming = [
-    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
-    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 },
-    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
+/* เนื้อเพลง */
+const lyrics = [
+    "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ",
+    "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ",
+    "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด",
+    "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️"
 ];
 
+let li = 0;
 function startLyrics() {
     const el = document.getElementById("lyric-text");
-    let i = 0;
-
     function show() {
-        if (i >= lyricsWithTiming.length) return;
-        el.innerText = lyricsWithTiming[i].text;
+        if (li >= lyrics.length) return;
+        el.innerText = lyrics[li++];
         el.classList.add("visible");
-
         setTimeout(() => {
             el.classList.remove("visible");
-            i++;
             setTimeout(show, 1000);
-        }, lyricsWithTiming[i].duration);
+        }, 4500);
     }
     show();
 }
 
-/* ⏱️ ตัวนับเวลา */
+/* ตัวนับเวลา */
 const startDate = new Date(2025, 5, 25).getTime();
 setInterval(() => {
-    const now = Date.now();
-    const d = now - startDate;
+    const d = Date.now() - startDate;
     document.getElementById("timer").innerText =
         Math.floor(d/86400000)+" วัน "+
         Math.floor(d%86400000/3600000)+" ชม. "+
@@ -262,9 +244,9 @@ setInterval(() => {
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 
-/* 🚫 ปิด pinch / double tap zoom */
-document.addEventListener('gesturestart', e => e.preventDefault());
-document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+/* ปิด gesture */
+document.addEventListener("gesturestart", e => e.preventDefault());
+document.addEventListener("touchmove", e => e.preventDefault(), { passive:false });
 </script>
 
 </body>
