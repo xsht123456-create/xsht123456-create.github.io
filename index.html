@@ -91,7 +91,7 @@ html, body {
     font-weight: bold;
     color: #ff6699;
     opacity: 0;
-    transition: 1s;
+    transition: opacity 1s;
     min-height: 2em;
 }
 
@@ -109,7 +109,7 @@ html, body {
 
 <body>
 
-<audio id="bg-music" loop>
+<audio id="bg-music">
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
@@ -143,17 +143,15 @@ html, body {
         <div class="timer" id="timer"></div>
     </div>
 </div>
+
 <script>
-/* 🔐 PIN */
 const correctPassword = "250625";
 const inputs = document.querySelectorAll(".pin-container input");
 const music = document.getElementById("bg-music");
 const lyricEl = document.getElementById("lyric-text");
 
-/* ⏱ หน่วงอินโทรก่อนร้อง */
 const LYRIC_INTRO_DELAY = 1000;
 
-/* 🎵 เนื้อเพลง + timing */
 const lyricsWithTiming = [
     { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
     { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
@@ -161,25 +159,20 @@ const lyricsWithTiming = [
     { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
 ];
 
-let lyricTimer = null;
 let lyricIndex = 0;
+let lyricTimer = null;
 
-/* PIN */
 inputs[0].focus();
 
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, '');
-        if (input.value && i < inputs.length - 1) {
-            inputs[i + 1].focus();
-        }
+        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
         checkPin();
     });
 
     input.addEventListener("keydown", e => {
-        if (e.key === "Backspace" && !input.value && i > 0) {
-            inputs[i - 1].focus();
-        }
+        if (e.key === "Backspace" && !input.value && i > 0) inputs[i - 1].focus();
     });
 });
 
@@ -196,25 +189,24 @@ function checkPin() {
 }
 
 function openGift() {
-    document.getElementById("welcome-screen").style.display = "none";
+    const welcome = document.getElementById("welcome-screen");
     const main = document.getElementById("main-content");
+
+    welcome.style.display = "none";
     main.style.display = "flex";
-    setTimeout(() => main.style.opacity = 1, 50);
 
-    startSong();
+    requestAnimationFrame(() => {
+        main.style.opacity = 1;
+
+        music.currentTime = 0;
+        music.volume = 0.5;
+        music.play();
+
+        resetLyrics();
+        setTimeout(startLyrics, LYRIC_INTRO_DELAY);
+    });
 }
 
-/* ▶️ เริ่มเพลง + เนื้อร้อง */
-function startSong() {
-    music.currentTime = 0;
-    music.volume = 0.5;
-    music.play();
-
-    resetLyrics();
-    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
-}
-
-/* 🔁 รีเซ็ตเนื้อร้อง */
 function resetLyrics() {
     if (lyricTimer) clearTimeout(lyricTimer);
     lyricIndex = 0;
@@ -222,7 +214,6 @@ function resetLyrics() {
     lyricEl.classList.remove("visible");
 }
 
-/* 🎤 เล่นเนื้อร้อง */
 function startLyrics() {
     if (lyricIndex >= lyricsWithTiming.length) return;
 
@@ -236,12 +227,14 @@ function startLyrics() {
     }, lyricsWithTiming[lyricIndex].duration);
 }
 
-/* 🔁 เพลงจบ → วนใหม่ทั้งเพลง + เนื้อร้อง */
 music.addEventListener("ended", () => {
-    startSong();
+    resetLyrics();
+    music.currentTime = 0;
+    music.play();
+    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
 });
 
-/* ⏳ ตัวนับเวลา */
+/* timer */
 const startDate = new Date(2025, 5, 25).getTime();
 setInterval(() => {
     const d = Date.now() - startDate;
@@ -252,7 +245,6 @@ setInterval(() => {
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 </script>
-
 
 </body>
 </html>
