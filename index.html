@@ -46,16 +46,8 @@ html, body {
     border-radius: 10px;
     border: 2px solid #ff4d94;
     outline: none;
-}
-
-/* ● แทนตัวเลข */
-.pin-container input {
     -webkit-text-security: disc;
     text-security: disc;
-}
-
-.pin-container input:focus {
-    border-color: #ff1f7a;
 }
 
 #error-text {
@@ -82,6 +74,7 @@ html, body {
     box-shadow: 0 10px 25px rgba(0,0,0,.1);
 }
 
+/* 🎥 กรอบวิดีโอ */
 .photo-frame {
     width: 160px;
     height: 160px;
@@ -91,7 +84,7 @@ html, body {
     margin: 15px auto;
 }
 
-.photo-frame img {
+.photo-frame video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -113,14 +106,6 @@ html, body {
     font-weight: bold;
     color: #ff6699;
 }
-
-@media (max-width:480px){
-    .pin-container input {
-        width: 42px;
-        height: 52px;
-        font-size: 1.6rem;
-    }
-}
 </style>
 </head>
 
@@ -136,12 +121,12 @@ html, body {
     <p>ใส่รหัส 6 ตัว ❤️</p>
 
     <div class="pin-container">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
     </div>
 
     <p id="error-text"></p>
@@ -152,8 +137,13 @@ html, body {
     <div class="container">
         <h1>Happy 6 Months</h1>
 
+        <!-- 🎥 วิดีโอแทนรูป -->
         <div class="photo-frame">
-            <img src="mylove.jpg">
+            <video src="mylove.mp4"
+                   autoplay
+                   loop
+                   muted
+                   playsinline></video>
         </div>
 
         <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
@@ -169,13 +159,10 @@ const inputs = document.querySelectorAll(".pin-container input");
 
 inputs[0].focus();
 
-/* คุมการกรอก PIN */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, '');
-        if (input.value && i < inputs.length - 1) {
-            inputs[i + 1].focus();
-        }
+        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
         checkPin();
     });
 
@@ -200,43 +187,14 @@ function checkPin() {
 }
 
 function openGift() {
-    const welcome = document.getElementById("welcome-screen");
-    const main = document.getElementById("main-content");
-    const music = document.getElementById("bg-music");
-
-    music.volume = 0.5;
-    music.play();
-
-    welcome.style.opacity = 0;
+    document.getElementById("bg-music").play();
+    document.getElementById("welcome-screen").style.opacity = 0;
     setTimeout(() => {
-        welcome.style.display = "none";
-        main.style.display = "flex";
-        setTimeout(() => main.style.opacity = 1, 50);
+        welcome-screen.style.display = "none";
+        document.getElementById("main-content").style.display = "flex";
+        document.getElementById("main-content").style.opacity = 1;
         startLyrics();
     }, 1000);
-}
-
-/* เนื้อเพลง */
-const lyrics = [
-    "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ",
-    "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ",
-    "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด",
-    "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️"
-];
-
-let li = 0;
-function startLyrics() {
-    const el = document.getElementById("lyric-text");
-    function show() {
-        if (li >= lyrics.length) return;
-        el.innerText = lyrics[li++];
-        el.classList.add("visible");
-        setTimeout(() => {
-            el.classList.remove("visible");
-            setTimeout(show, 1000);
-        }, 4500);
-    }
-    show();
 }
 
 /* ตัวนับเวลา */
@@ -249,10 +207,6 @@ setInterval(() => {
         Math.floor(d%3600000/60000)+" น. "+
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
-
-/* ปิด pinch / zoom */
-document.addEventListener("gesturestart", e => e.preventDefault());
-document.addEventListener("touchmove", e => e.preventDefault(), { passive:false });
 </script>
 
 </body>
