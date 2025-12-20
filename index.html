@@ -92,6 +92,7 @@ html, body {
     color: #ff6699;
     opacity: 0;
     transition: 1s;
+    min-height: 2em;
 }
 
 .lyric-text.visible {
@@ -112,7 +113,6 @@ html, body {
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
-<!-- หน้า PIN -->
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
     <p>ใส่รหัส 6 ตัว ❤️</p>
@@ -129,7 +129,6 @@ html, body {
     <p id="error-text"></p>
 </div>
 
-<!-- เนื้อหาหลัก -->
 <div id="main-content">
     <div class="container">
         <h1>Happy 6 Months</h1>
@@ -146,15 +145,28 @@ html, body {
 </div>
 
 <script>
+/* 🔐 PIN */
 const correctPassword = "250625";
 const inputs = document.querySelectorAll(".pin-container input");
 const music = document.getElementById("bg-music");
+const lyricEl = document.getElementById("lyric-text");
 
-const LYRIC_INTRO_DELAY = 3200; // ⏱ ปรับตรงนี้ให้ตรงจังหวะร้อง (ms)
+/* ⏱ หน่วงอินโทรก่อนร้อง */
+const LYRIC_INTRO_DELAY = 3200;
 
+/* 🎵 เนื้อเพลง + timing (ของคุณ) */
+const lyricsWithTiming = [
+    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
+    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
+    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 },
+    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
+];
+
+let lyricTimer = null;
+
+/* PIN input */
 inputs[0].focus();
 
-/* เด้งช่อง + ตรวจ PIN */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, '');
@@ -172,41 +184,57 @@ inputs.forEach((input, i) => {
 });
 
 function checkPin() {
-    const pin = Array.from(inputs).map(el => el.value).join("");
+    const pin = [...inputs].map(i => i.value).join("");
     if (pin.length === 6) {
-        if (pin === correctPassword) {
-            openGift();
-        } else {
+        if (pin === correctPassword) openGift();
+        else {
             document.getElementById("error-text").innerText = "รหัสไม่ถูกต้อง 🥺";
-            inputs.forEach(el => el.value = "");
+            inputs.forEach(i => i.value = "");
             inputs[0].focus();
         }
     }
 }
 
 function openGift() {
-    const welcome = document.getElementById("welcome-screen");
+    document.getElementById("welcome-screen").style.display = "none";
     const main = document.getElementById("main-content");
+    main.style.display = "flex";
+    setTimeout(() => main.style.opacity = 1, 50);
 
     music.currentTime = 0;
     music.volume = 0.5;
     music.play();
 
-    welcome.style.opacity = 0;
-    setTimeout(() => {
-        welcome.style.display = "none";
-        main.style.display = "flex";
-        setTimeout(() => main.style.opacity = 1, 50);
-
-        // ⏱ หน่วงอินโทรก่อนเนื้อร้อง
-        setTimeout(() => {
-            startLyrics();
-        }, LYRIC_INTRO_DELAY);
-
-    }, 1000);
+    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
 }
 
-/* ตัวนับเวลา */
+/* 🎤 เล่นเนื้อร้อง */
+function startLyrics() {
+    if (lyricTimer) clearTimeout(lyricTimer);
+    let index = 0;
+
+    function showNext() {
+        if (index >= lyricsWithTiming.length) return;
+
+        lyricEl.textContent = lyricsWithTiming[index].text;
+        lyricEl.classList.add("visible");
+
+        lyricTimer = setTimeout(() => {
+            lyricEl.classList.remove("visible");
+            index++;
+            lyricTimer = setTimeout(showNext, 800);
+        }, lyricsWithTiming[index].duration);
+    }
+
+    showNext();
+}
+
+/* 🔁 เพลงวน → เนื้อร้องวน */
+music.addEventListener("ended", () => {
+    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
+});
+
+/* ⏳ ตัวนับเวลา */
 const startDate = new Date(2025, 5, 25).getTime();
 setInterval(() => {
     const d = Date.now() - startDate;
@@ -216,13 +244,6 @@ setInterval(() => {
         Math.floor(d%3600000/60000)+" น. "+
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
-
-/* 🎵 ถ้าเพลงวน → หน่วงอินโทรใหม่ */
-music.addEventListener("ended", () => {
-    setTimeout(() => {
-        startLyrics();
-    }, LYRIC_INTRO_DELAY);
-});
 </script>
 
 </body>
