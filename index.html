@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- 🔒 ปิดซูม + ปรับให้เหมาะกับมือถือ -->
+    <!-- 🔒 ปิดซูม + เหมาะกับมือถือ -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -27,10 +27,7 @@
 
         #welcome-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             background-color: #ffccdd;
             display: flex;
             flex-direction: column;
@@ -126,34 +123,14 @@
             color: #ff6699;
         }
 
-        /* 📱 ปรับสำหรับมือถือ */
+        /* 📱 มือถือ */
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            .photo-frame {
-                width: 150px;
-                height: 150px;
-            }
-
-            .btn-open {
-                font-size: 1.1rem;
-                padding: 10px 24px;
-            }
-
-            #password-input {
-                font-size: 1.2rem;
-                width: 160px;
-            }
-
-            .lyric-text {
-                font-size: 1rem;
-            }
+            h1 { font-size: 1.6rem; }
+            .container { padding: 20px; }
+            .photo-frame { width: 150px; height: 150px; }
+            .btn-open { font-size: 1.1rem; padding: 10px 24px; }
+            #password-input { font-size: 1.2rem; width: 160px; }
+            .lyric-text { font-size: 1rem; }
         }
     </style>
 </head>
@@ -169,7 +146,15 @@
     <h1>เค้ามีอะไรจะบอก</h1>
     <p>ใส่รหัส 6 ตัว ❤️</p>
 
-    <input type="password" id="password-input" maxlength="6" placeholder="••••••">
+    <!-- ✅ บังคับคีย์บอร์ดตัวเลข -->
+    <input
+        type="password"
+        id="password-input"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        maxlength="6"
+        placeholder="••••••">
+
     <button class="btn-open" onclick="checkPassword()">ยืนยัน</button>
     <p id="error-text"></p>
 </div>
@@ -194,14 +179,19 @@
 </div>
 
 <script>
-/* 🔐 ตั้งรหัสตรงนี้ */
+/* 🔐 ตั้งรหัส */
 const correctPassword = "250625";
 
+/* กันพิมพ์ที่ไม่ใช่ตัวเลข */
+const passInput = document.getElementById("password-input");
+passInput.addEventListener("input", () => {
+    passInput.value = passInput.value.replace(/\D/g, '');
+});
+
 function checkPassword() {
-    const input = document.getElementById("password-input").value;
     const error = document.getElementById("error-text");
 
-    if (input === correctPassword) {
+    if (passInput.value === correctPassword) {
         error.innerText = "";
         openGift();
     } else {
@@ -210,7 +200,7 @@ function checkPassword() {
 }
 
 /* กด Enter ได้ */
-document.getElementById("password-input").addEventListener("keyup", e => {
+passInput.addEventListener("keyup", e => {
     if (e.key === "Enter") checkPassword();
 });
 
@@ -219,7 +209,6 @@ function openGift() {
     const main = document.getElementById("main-content");
     const music = document.getElementById("bg-music");
 
-    /* 🔒 ล็อกหน้าจอไม่ให้ขยับ */
     document.body.style.position = "fixed";
     document.body.style.width = "100%";
 
@@ -273,7 +262,7 @@ setInterval(() => {
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 
-/* 🚫 ปิด pinch / double tap zoom (iOS) */
+/* 🚫 ปิด pinch / double tap zoom */
 document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 </script>
