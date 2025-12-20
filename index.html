@@ -2,17 +2,27 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 🔒 ปิดซูม + ปรับให้เหมาะกับมือถือ -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Happy 6 Months Anniversary!</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* 🔒 ล็อกการเลื่อน + gesture */
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+
         body {
             font-family: 'Sarabun', sans-serif;
             background-color: #ffe6e6;
             color: #d63384;
-            margin: 0;
-            overflow: hidden;
         }
 
         #welcome-screen {
@@ -28,6 +38,7 @@
             align-items: center;
             z-index: 1000;
             transition: opacity 1s ease-in-out;
+            text-align: center;
         }
 
         .btn-open {
@@ -64,6 +75,7 @@
             transition: opacity 1.5s ease-in-out;
             display: none;
             height: 100vh;
+            width: 100vw;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -75,6 +87,7 @@
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 350px;
+            max-width: 90%;
             text-align: center;
         }
 
@@ -112,8 +125,39 @@
             font-weight: bold;
             color: #ff6699;
         }
+
+        /* 📱 ปรับสำหรับมือถือ */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .photo-frame {
+                width: 150px;
+                height: 150px;
+            }
+
+            .btn-open {
+                font-size: 1.1rem;
+                padding: 10px 24px;
+            }
+
+            #password-input {
+                font-size: 1.2rem;
+                width: 160px;
+            }
+
+            .lyric-text {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <audio id="bg-music" loop>
@@ -136,7 +180,7 @@
         <h1>Happy 6 Months</h1>
 
         <div class="photo-frame">
-            <img src="mylove.jpg">
+            <img src="mylove.jpg" alt="My Love">
         </div>
 
         <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
@@ -175,6 +219,10 @@ function openGift() {
     const main = document.getElementById("main-content");
     const music = document.getElementById("bg-music");
 
+    /* 🔒 ล็อกหน้าจอไม่ให้ขยับ */
+    document.body.style.position = "fixed";
+    document.body.style.width = "100%";
+
     music.volume = 0.5;
     music.play();
 
@@ -187,7 +235,7 @@ function openGift() {
     }, 1000);
 }
 
-/* เนื้อเพลง */
+/* 🎵 เนื้อเพลง */
 const lyricsWithTiming = [
     { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
     { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
@@ -213,7 +261,7 @@ function startLyrics() {
     show();
 }
 
-/* ตัวนับเวลา */
+/* ⏱️ ตัวนับเวลา */
 const startDate = new Date(2025, 5, 25).getTime();
 setInterval(() => {
     const now = Date.now();
@@ -224,6 +272,10 @@ setInterval(() => {
         Math.floor(d%3600000/60000)+" น. "+
         Math.floor(d%60000/1000)+" วิ";
 }, 1000);
+
+/* 🚫 ปิด pinch / double tap zoom (iOS) */
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 </script>
 
 </body>
