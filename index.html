@@ -146,15 +146,17 @@ html, body {
 </div>
 
 <script>
+/* 🔐 รหัส */
 const correctPassword = "250625";
 const inputs = document.querySelectorAll(".pin-container input");
 
+/* โฟกัสช่องแรก */
 inputs[0].focus();
 
-/* เด้งช่อง + ตรวจ PIN */
+/* เด้งช่อง + รับเฉพาะตัวเลข */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
-        input.value = input.value.replace(/\D/g, '');
+        input.value = input.value.replace(/\D/g, "");
 
         if (input.value && i < inputs.length - 1) {
             inputs[i + 1].focus();
@@ -170,6 +172,7 @@ inputs.forEach((input, i) => {
     });
 });
 
+/* ตรวจ PIN */
 function checkPin() {
     const pin = Array.from(inputs).map(el => el.value).join("");
 
@@ -184,6 +187,7 @@ function checkPin() {
     }
 }
 
+/* เปิดหน้าเว็บหลัก */
 function openGift() {
     const welcome = document.getElementById("welcome-screen");
     const main = document.getElementById("main-content");
@@ -197,21 +201,50 @@ function openGift() {
         welcome.style.display = "none";
         main.style.display = "flex";
         setTimeout(() => main.style.opacity = 1, 50);
-        startLyrics();
+        startLyrics();   // 👈 เรียกเนื้อเพลงตรงนี้
     }, 1000);
 }
 
-/* ตัวนับเวลา */
+/* 🎵 เนื้อเพลง + timing (ของคุณเดิม) */
+const lyricsWithTiming = [
+    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
+    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
+    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 },
+    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
+];
+
+function startLyrics() {
+    const el = document.getElementById("lyric-text");
+    let i = 0;
+
+    function showNext() {
+        if (i >= lyricsWithTiming.length) return;
+
+        el.innerText = lyricsWithTiming[i].text;
+        el.classList.add("visible");
+
+        setTimeout(() => {
+            el.classList.remove("visible");
+            i++;
+            setTimeout(showNext, 1000);
+        }, lyricsWithTiming[i].duration);
+    }
+
+    showNext();
+}
+
+/* ⏱ ตัวนับเวลา */
 const startDate = new Date(2025, 5, 25).getTime();
 setInterval(() => {
     const d = Date.now() - startDate;
     document.getElementById("timer").innerText =
-        Math.floor(d/86400000)+" วัน "+
-        Math.floor(d%86400000/3600000)+" ชม. "+
-        Math.floor(d%3600000/60000)+" น. "+
-        Math.floor(d%60000/1000)+" วิ";
+        Math.floor(d / 86400000) + " วัน " +
+        Math.floor(d % 86400000 / 3600000) + " ชม. " +
+        Math.floor(d % 3600000 / 60000) + " น. " +
+        Math.floor(d % 60000 / 1000) + " วิ";
 }, 1000);
 </script>
+
 
 </body>
 </html>
