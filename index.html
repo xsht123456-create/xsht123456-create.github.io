@@ -2,204 +2,143 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Happy 6 Months Anniversary!</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-/* --- Global Styles --- */
 html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
-    touch-action: none;
     font-family: 'Sarabun', sans-serif;
-    background: #ffe6e6; /* สีพื้นหลังชมพูอ่อน */
-    color: #d63384; /* สีข้อความหลัก */
-    position: relative; /* สำหรับ floating hearts */
+    animation: bgShift 20s ease-in-out infinite;
 }
 
-/* ใช้ฟอนต์ลายมือกับหัวข้อ */
+@keyframes bgShift {
+    0% { background:#ffe6e6; }
+    33% { background:#ffd6e8; }
+    66% { background:#e6d9ff; }
+    100% { background:#ffe6e6; }
+}
+
 h1 {
     font-family: 'Dancing Script', cursive;
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* เพิ่มเงาให้ตัวหนังสือ */
+    color:#d63384;
 }
 
-/* --- Floating Hearts Animation Background --- */
+/* floating hearts */
 .heart-bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 0; /* อยู่หลังสุด */
-    overflow: hidden;
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
 }
 .heart {
-    position: absolute;
-    bottom: -10vh;
-    font-size: 20px;
-    color: #ff99cc;
-    opacity: 0.6;
+    position:absolute;
+    bottom:-10vh;
+    font-size:20px;
+    opacity:.6;
     animation: float 6s linear infinite;
 }
 @keyframes float {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
-    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    from { transform:translateY(0); opacity:0; }
+    to { transform:translateY(-110vh); opacity:1; }
 }
 
-/* --- Welcome Screen --- */
+/* welcome */
 #welcome-screen {
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 204, 221, 0.95); /* เพิ่มความโปร่งใสเล็กน้อย */
-    backdrop-filter: blur(5px); /* เพิ่มเบลอฉากหลัง */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 100; /* อยู่เหนือ background */
-    transition: opacity 1s ease-in-out; /* ปรับ transition ให้นุ่มขึ้น */
+    position:fixed;
+    inset:0;
+    background:rgba(255,204,221,.95);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
+    transition:opacity 1s;
 }
 
 .pin-container {
-    display: flex;
-    gap: 12px; /* เพิ่มระยะห่าง */
-    margin: 30px 0;
+    display:flex;
+    gap:10px;
 }
-
 .pin-container input {
-    width: 50px;
-    height: 60px;
-    font-size: 2rem;
-    text-align: center;
-    border-radius: 12px;
-    border: 3px solid #ff80bf; /* เปลี่ยนสีขอบให้ละมุนขึ้น */
-    outline: none;
-    background-color: #fff5f8;
-    color: #d63384;
-    box-shadow: 0 4px 8px rgba(255, 128, 191, 0.3); /* เพิ่มเงา */
-    transition: all 0.3s ease;
-}
-
-.pin-container input:focus {
-    border-color: #d63384;
-    transform: translateY(-3px); /* ขยับขึ้นเล็กน้อยตอนกด */
-    box-shadow: 0 6px 12px rgba(214, 51, 132, 0.4);
+    width:45px;
+    height:55px;
+    font-size:2rem;
+    text-align:center;
+    border-radius:10px;
+    border:2px solid #ff80bf;
 }
 
 #error-text {
-    color: #ff3333;
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 1.5em; /* จองพื้นที่ไว้ไม่ให้กระตุก */
+    color:red;
+    margin-top:10px;
 }
 
-/* Heart Explosion Effect */
-.explosion-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 101;
-}
-.exploding-heart {
-    position: absolute;
-    font-size: 24px;
-    color: #ff3366;
-    animation: explode 0.8s ease-out forwards;
-}
-@keyframes explode {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-}
-
-/* --- Main Content --- */
+/* main */
 #main-content {
-    display: none;
-    opacity: 0;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1.5s ease-in-out;
-    position: relative;
-    z-index: 50; /* อยู่เหนือ background แต่ใต้ welcome screen ตอนแรก */
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.9); /* พื้นหลังขาวโปร่งแสง */
-    padding: 40px;
-    border-radius: 25px;
-    width: 380px;
-    max-width: 90%;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); /* เงาสีชมพู */
-    border: 2px solid #ffd1dc; /* เพิ่มขอบสีชมพูอ่อน */
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    width:360px;
+    text-align:center;
+}
+
+@keyframes pulseSoft {
+    0%{transform:scale(1)}
+    50%{transform:scale(1.05)}
+    100%{transform:scale(1)}
 }
 
 .photo-frame {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 6px solid #ff99cc;
-    margin: 25px auto;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-    position: relative;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    overflow:hidden;
+    border:6px solid #ff99cc;
+    margin:20px auto;
+    animation:pulseSoft 1.4s ease-in-out infinite;
 }
 .photo-frame video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.message-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    color: #d63384;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .lyric-text {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #ff6699;
-    opacity: 0;
-    transition: all 0.8s ease; /* ปรับ transition */
-    min-height: 2.5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Dancing Script', cursive; /* ใช้ฟอนต์ลายมือกับเนื้อเพลงด้วย */
+    min-height:2em;
+    font-family:'Dancing Script', cursive;
+    color:#ff6699;
+    opacity:0;
+    transition:.6s;
 }
-
-.lyric-text.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.lyric-text:not(.visible) {
-    transform: translateY(10px); /* เลื่อนลงเล็กน้อยตอนซ่อน */
-}
+.lyric-text.show { opacity:1; }
 
 .timer {
-    margin-top: 20px;
-    font-weight: bold;
-    color: #ff6699;
-    font-size: 1.1rem;
-    background: #fff0f5;
-    padding: 10px 20px;
-    border-radius: 20px;
-    display: inline-block;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-top:15px;
+    font-weight:bold;
+}
+
+/* tap heart */
+.tap-heart {
+    position:fixed;
+    font-size:24px;
+    pointer-events:none;
+    animation: pop 1s forwards;
+}
+@keyframes pop {
+    from { transform:scale(.6); opacity:1; }
+    to { transform:scale(1.6) translateY(-30px); opacity:0; }
 }
 </style>
 </head>
@@ -208,216 +147,120 @@ h1 {
 
 <div class="heart-bg" id="heart-bg"></div>
 
-<audio id="bg-music">
-    <source src="song.mp3" type="audio/mp3">
-</audio>
+<audio id="bg-music" src="song.mp3"></audio>
 
 <div id="welcome-screen">
-    <h1>เค้ามีอะไรจะบอก</h1>
-    <p style="font-size: 1.2rem;">ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
-
+    <h1>ใส่รหัสก่อนนะ ❤️</h1>
     <div class="pin-container">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric">
     </div>
-
-    <p id="error-text"></p>
+    <div id="error-text"></div>
 </div>
 
 <div id="main-content">
     <div class="container">
-        <h1>Happy 6 Months!</h1>
+        <h1>Happy 6 Months</h1>
 
         <div class="photo-frame">
-            <video src="mylove.mp4" autoplay loop muted playsinline></video>
+            <video src="mylove.mp4" autoplay muted loop playsinline></video>
         </div>
 
-        <p class="message-text">ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️</p>
+        <p>รักเธอที่สุดเลย ❤️</p>
 
-        <div id="lyric-text" class="lyric-text"></div>
-        <div class="timer" id="timer"></div>
+        <div id="lyric" class="lyric-text"></div>
+        <div id="timer" class="timer"></div>
     </div>
 </div>
 
 <script>
-const correctPassword = "250625";
-const inputs = document.querySelectorAll(".pin-container input");
-const music = document.getElementById("bg-music");
-const lyricEl = document.getElementById("lyric-text");
-const welcomeScreen = document.getElementById("welcome-screen");
-const mainContent = document.getElementById("main-content");
-const errorText = document.getElementById("error-text");
+const correctPassword="250625";
+const inputs=document.querySelectorAll(".pin-container input");
+const music=document.getElementById("bg-music");
+const lyricEl=document.getElementById("lyric");
+const welcome=document.getElementById("welcome-screen");
+const main=document.getElementById("main-content");
 
-// --- Floating Hearts Animation ---
-const heartBg = document.getElementById('heart-bg');
-const heartSymbols = ['❤️', '💖', '💗', '💓', '💕'];
-
-function createHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.fontSize = (Math.random() * 20 + 15) + 'px'; // ขนาด 15-35px
-    heart.style.animationDuration = (Math.random() * 5 + 4) + 's'; // ความเร็ว 4-9s
-    heart.style.animationDelay = Math.random() * 2 + 's';
-    heartBg.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 9000); // ลบออกเมื่ออนิเมชั่นจบ
-}
-setInterval(createHeart, 800); // สร้างหัวใจใหม่ทุก 0.8 วินาที
-
-
-// --- Input Logic ---
-inputs[0].focus();
-
-inputs.forEach((input, i) => {
-    input.addEventListener("input", () => {
-        input.value = input.value.replace(/\D/g, '');
-        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+inputs.forEach((inp,i)=>{
+    inp.oninput=()=>{
+        inp.value=inp.value.replace(/\D/g,'');
+        if(inp.value && i<5) inputs[i+1].focus();
         checkPin();
-    });
-
-    input.addEventListener("keydown", e => {
-        if (e.key === "Backspace" && !input.value && i > 0) inputs[i - 1].focus();
-    });
+    };
 });
 
-function checkPin() {
-    const pin = [...inputs].map(i => i.value).join("");
-    if (pin.length === 6) {
-        if (pin === correctPassword) {
-            errorText.innerText = ""; // เคลียร์ข้อความ error
-            inputs.forEach(i => i.blur()); // เอา focus ออก
-            playExplosionEffect(); // เล่นเอฟเฟกต์หัวใจระเบิด
-            setTimeout(openGift, 800); // รอเอฟเฟกต์จบแล้วค่อยเปลี่ยนหน้า
-        } else {
-            errorText.innerText = "รหัสผิดอะ ลองใหม่ซิ 🥺";
-            inputs.forEach(i => {
-                i.value = "";
-                i.classList.add("error"); // (Optional) Could add shake animation class here
-            });
+function checkPin(){
+    const pin=[...inputs].map(i=>i.value).join('');
+    if(pin.length===6){
+        if(pin===correctPassword){
+            welcome.style.opacity=0;
+            setTimeout(()=>{
+                welcome.style.display="none";
+                main.style.display="flex";
+                music.play();
+                startLyrics();
+            },1000);
+        }else{
+            document.getElementById("error-text").innerText="รหัสผิด 🥺";
+            inputs.forEach(i=>i.value="");
             inputs[0].focus();
-            setTimeout(() => errorText.innerText = "", 2000);
         }
     }
 }
 
-// --- Heart Explosion Effect Function ---
-function playExplosionEffect() {
-    const container = document.createElement('div');
-    container.classList.add('explosion-container');
-    welcomeScreen.appendChild(container);
+/* hearts bg */
+const bg=document.getElementById("heart-bg");
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent="❤️";
+    h.style.left=Math.random()*100+"vw";
+    bg.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},800);
 
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('exploding-heart');
-        heart.innerHTML = '💖';
-        // Random direction and distance
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 150 + 50;
-        const x = Math.cos(angle) * distance + 'px';
-        const y = Math.sin(angle) * distance + 'px';
-        heart.style.setProperty('--x', x);
-        heart.style.setProperty('--y', y);
-        heart.style.animationDelay = Math.random() * 0.3 + 's';
-        container.appendChild(heart);
-    }
-    setTimeout(() => container.remove(), 1000);
-}
-
-
-// --- Transition to Main Content ---
-function openGift() {
-    welcomeScreen.style.opacity = 0; // Fade out
-
-    setTimeout(() => {
-        welcomeScreen.style.display = "none";
-        mainContent.style.display = "flex";
-
-        // ใช้ requestAnimationFrame เพื่อให้แน่ใจว่า display: flex ทำงานแล้วก่อนเริ่ม fade in
-        requestAnimationFrame(() => {
-            mainContent.style.opacity = 1; // Fade in
-
-            music.currentTime = 0;
-            music.volume = 0.6; // เพิ่มเสียงขึ้นเล็กน้อย
-            music.play().catch(e => console.log("Auto-play blocked:", e)); // จัดการกรณี browser บล็อก auto-play
-
-            resetLyrics();
-            setTimeout(startLyrics, LYRIC_INTRO_DELAY);
-        });
-    }, 1000); // รอให้ welcomeScreen fade out จนสุด (ตรงกับ CSS transition 1s)
-}
-
-// --- Lyrics Logic (เหมือนเดิม) ---
-const LYRIC_INTRO_DELAY = 1500; // เพิ่ม delay เล็กน้อย
-
-const lyricsWithTiming = [
-    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
-    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5300 },
-    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5400 }
+/* lyrics */
+const lyrics=[
+ {t:"เธอเพียงคนเดียวและเพียงเธอที่ต้องการ",d:4200},
+ {t:"ฉันจะทำทุกทางด้วยวิญญาณและหัวใจ",d:4500},
+ {t:"ไม่ว่าเป็นเมื่อไรสถานใด",d:5300},
+ {t:"ทั้งหัวใจมีเธอคนเดียว ❤️",d:5400}
 ];
+let idx=0;
 
-let lyricIndex = 0;
-let lyricTimer = null;
-
-function resetLyrics() {
-    if (lyricTimer) clearTimeout(lyricTimer);
-    lyricIndex = 0;
-    lyricEl.textContent = "";
-    lyricEl.classList.remove("visible");
+function startLyrics(){
+    lyricEl.textContent=lyrics[idx].t;
+    lyricEl.classList.add("show");
+    setTimeout(()=>{
+        lyricEl.classList.remove("show");
+        idx=(idx+1)%lyrics.length;
+        setTimeout(startLyrics,800);
+    },lyrics[idx].d);
 }
 
-function startLyrics() {
-    if (lyricIndex >= lyricsWithTiming.length) return;
-
-    lyricEl.textContent = lyricsWithTiming[lyricIndex].text;
-    lyricEl.classList.add("visible");
-
-    lyricTimer = setTimeout(() => {
-        lyricEl.classList.remove("visible");
-        lyricIndex++;
-        lyricTimer = setTimeout(startLyrics, 800); // เวลาพักระหว่างวรรค
-    }, lyricsWithTiming[lyricIndex].duration);
-}
-
-music.addEventListener("ended", () => {
-    resetLyrics();
-    music.currentTime = 0;
-    music.play();
-    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
+/* tap heart */
+document.addEventListener("click",e=>{
+    const h=document.createElement("div");
+    h.className="tap-heart";
+    h.textContent="❤️";
+    h.style.left=e.clientX+"px";
+    h.style.top=e.clientY+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1000);
 });
 
-/* --- Timer Logic (เหมือนเดิม) --- */
-// **สำคัญ** ตรวจสอบวันที่เริ่มคบกันให้ถูกต้อง (ปี, เดือน-1, วัน)
-// เดือนเริ่มนับจาก 0 (มกราคม = 0, มิถุนายน = 5)
-// ตัวอย่าง: ถ้าเริ่มคบ 25 ธันวาคม 2024 -> new Date(2024, 11, 25)
-const startDate = new Date(2025, 5, 25).getTime(); // แก้ไขวันที่ตรงนี้! (ตัวอย่าง: 25 ธ.ค. 2024)
-
-setInterval(() => {
-    const now = Date.now();
-    const d = now - startDate;
-
-    // ป้องกันเวลาติดลบกรณีตั้งวันที่ในอนาคต
-    if (d < 0) {
-         document.getElementById("timer").innerText = "Coming Soon...";
-         return;
-    }
-
-    const days = Math.floor(d / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((d % (1000 * 60)) / 1000);
-
-    document.getElementById("timer").innerText =
-        `${days} วัน ${hours} ชม. ${minutes} น. ${seconds} วิ`;
-}, 1000);
+/* timer */
+const startDate=new Date(2025,5,25).getTime();
+setInterval(()=>{
+    const d=Date.now()-startDate;
+    if(d<0) return;
+    const days=Math.floor(d/86400000);
+    document.getElementById("timer").innerText=days+" วัน";
+},1000);
 </script>
 
 </body>
