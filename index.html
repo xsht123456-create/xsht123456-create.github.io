@@ -2,293 +2,190 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Happy 6 Months Anniversary!</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --pink: #ff4d94;
-}
-
-* {
-    box-sizing: border-box;
-}
+:root { --pink: #ff4d94; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
 
 body {
     margin: 0;
     font-family: 'Sarabun', sans-serif;
     background: linear-gradient(180deg, #ffe6e6, #ffccdd);
     color: #d63384;
-
     height: 100dvh;
-    padding: env(safe-area-inset-top)
-             env(safe-area-inset-right)
-             env(safe-area-inset-bottom)
-             env(safe-area-inset-left);
-
     overflow: hidden;
-}
-
-/* ---------- Welcome / Main ---------- */
-#welcome-screen,
-#main-content {
     position: fixed;
-    inset: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#welcome-screen, #main-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     transition: opacity 1s ease, transform 1s cubic-bezier(.22,.61,.36,1);
+    padding: 20px;
 }
 
-/* ---------- Welcome ---------- */
-#welcome-screen {
-    background: linear-gradient(180deg, #ffccdd, #ffe6e6);
-    z-index: 10;
-}
+#welcome-screen { background: linear-gradient(180deg, #ffccdd, #ffe6e6); z-index: 10; }
+#welcome-screen.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
 
-#welcome-screen.hide {
-    opacity: 0;
-    transform: scale(1.05);
-    pointer-events: none;
-}
-
-#welcome-screen h1 {
-    margin-bottom: 15px;
-}
-
-/* ---------- Input ---------- */
 #password-input {
-    width: 180px;
+    width: 200px;
     padding: 14px;
-    font-size: 1.3rem;
     text-align: center;
     border-radius: 30px;
     border: 2px solid var(--pink);
     outline: none;
-    letter-spacing: 6px;
+    letter-spacing: 8px;
     transition: transform .25s, box-shadow .25s;
+    font-size: 20px; /* ป้องกัน iOS ซูม */
+    height: 60px;
 }
 
-#password-input:focus {
-    box-shadow: 0 0 0 4px rgba(255,77,148,.2);
-}
-
-/* shake */
-.shake {
-    animation: shake .4s;
-}
-
+#password-input:focus { box-shadow: 0 0 0 4px rgba(255,77,148,.2); }
+.shake { animation: shake .4s; }
 @keyframes shake {
-    0% { transform: translateX(0); }
+    0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
     50% { transform: translateX(6px); }
     75% { transform: translateX(-4px); }
-    100% { transform: translateX(0); }
 }
 
-/* ---------- Button ---------- */
 .btn-open {
-    margin-top: 15px;
-    padding: 12px 34px;
-    font-size: 1.3rem;
+    margin-top: 20px;
+    padding: 12px 40px;
+    font-size: 1.2rem;
     border-radius: 50px;
     border: none;
     background: var(--pink);
     color: white;
     cursor: pointer;
-
     box-shadow: 0 10px 25px rgba(255,77,148,.35);
-    transition: transform .25s cubic-bezier(.22,.61,.36,1),
-                box-shadow .25s;
 }
 
-.btn-open:active {
-    transform: scale(.92);
-    box-shadow: 0 5px 15px rgba(255,77,148,.3);
-}
+#main-content { opacity: 0; pointer-events: none; transform: scale(.96); }
+#main-content.show { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-#error-text {
-    margin-top: 10px;
-    color: #ff1a75;
-}
-
-/* ---------- Main Content ---------- */
-#main-content {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(.96);
-}
-
-#main-content.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-}
-
-/* ---------- Card ---------- */
 .container {
-    width: 90%;
-    max-width: 360px;
-    padding: 18px;
-    background: white;
-    border-radius: 22px;
+    width: 100%;
+    max-width: 340px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
     text-align: center;
-
-    box-shadow: 0 20px 40px rgba(0,0,0,.12);
+    box-shadow: 0 20px 40px rgba(0,0,0,.1);
 }
 
-/* ---------- Photo ---------- */
 .photo-frame {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
-    margin: 15px auto;
-    border: 5px solid #ff99cc;
+    margin: 0 auto 20px;
+    border: 5px solid white;
 }
 
-.photo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ---------- Lyrics ---------- */
-.lyric-text {
-    font-size: 1.05rem;
-    font-weight: bold;
-    color: #ff6699;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.lyric-text.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ---------- Timer ---------- */
-.timer {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #ff6699;
-}
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+.lyric-text { min-height: 50px; margin: 15px 0; font-size: 1.1rem; font-weight: bold; color: #ff6699; opacity: 0; transition: opacity 0.8s; }
+.lyric-text.visible { opacity: 1; }
+.timer { margin-top: 15px; font-size: 0.9rem; background: #fff0f5; padding: 10px; border-radius: 15px; color: #ff4d94; }
 </style>
 </head>
-
 <body>
 
 <audio id="bg-music" loop>
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
-<!-- Welcome -->
 <div id="welcome-screen">
-    <div style="text-align:center">
-        <h1>ใส่รหัสผ่าน 6 ตัว ❤️</h1>
-        <input id="password-input" type="password" maxlength="6" placeholder="••••••">
-        <br>
-        <button class="btn-open" onclick="checkPassword()">ยืนยัน</button>
-        <p id="error-text"></p>
-    </div>
+    <h1>ใส่รหัสผ่าน ❤️</h1>
+    <input id="password-input" 
+           type="password" 
+           inputmode="numeric" 
+           maxlength="6" 
+           placeholder="••••••"
+           autocomplete="off">
+    <button class="btn-open" onclick="checkPassword()">ยืนยัน</button>
+    <p id="error-text"></p>
 </div>
 
-<!-- Main -->
 <div id="main-content">
     <div class="container">
-        <h1>Happy 6 Months</h1>
-
+        <h2 style="margin-top:0">Happy 6 Months</h2>
         <div class="photo-frame">
-            <img src="mylove.jpg">
+            <img src="mylove.jpg" alt="Love">
         </div>
-
-        <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
-
-        <div id="lyric-container">
-            <div id="lyric-text" class="lyric-text"></div>
-        </div>
-
+        <p>ขอบคุณที่อยู่ข้างกันมาตลอดนะ<br>รักเธอมากครับ ❤️</p>
+        <div id="lyric-text" class="lyric-text"></div>
         <div class="timer" id="timer"></div>
     </div>
 </div>
 
 <script>
-/* 🔐 ตั้งรหัสตรงนี้ */
 const correctPassword = "250625";
 
 function checkPassword() {
     const input = document.getElementById("password-input");
     const error = document.getElementById("error-text");
-
     if (input.value === correctPassword) {
-        error.innerText = "";
         openGift();
     } else {
-        error.innerText = "รหัสไม่ถูกต้องนะครับ";
+        document.getElementById("error-text").innerText = "รหัสไม่ถูกต้องนะครับ";
         input.classList.add("shake");
+        input.value = "";
         setTimeout(() => input.classList.remove("shake"), 400);
     }
 }
 
-document.getElementById("password-input").addEventListener("keyup", e => {
-    if (e.key === "Enter") checkPassword();
-});
-
 function openGift() {
-    const welcome = document.getElementById("welcome-screen");
-    const main = document.getElementById("main-content");
     const music = document.getElementById("bg-music");
-
     music.volume = 0.5;
-    music.play();
-
-    welcome.classList.add("hide");
-
+    music.play().catch(() => {});
+    document.getElementById("welcome-screen").classList.add("hide");
     setTimeout(() => {
-        main.classList.add("show");
+        document.getElementById("main-content").classList.add("show");
         startLyrics();
     }, 900);
 }
 
-/* Lyrics */
 const lyricsWithTiming = [
-    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
-    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5000 },
-    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5000 }
+    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4000 },
+    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4000 },
+    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไร", duration: 4000 },
+    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 4000 }
 ];
 
 function startLyrics() {
     const el = document.getElementById("lyric-text");
     let i = 0;
-
     function show() {
-        if (i >= lyricsWithTiming.length) return;
+        if (i >= lyricsWithTiming.length) i = 0;
         el.innerText = lyricsWithTiming[i].text;
         el.classList.add("visible");
-
         setTimeout(() => {
             el.classList.remove("visible");
-            i++;
-            setTimeout(show, 1000);
+            setTimeout(() => { i++; show(); }, 500);
         }, lyricsWithTiming[i].duration);
     }
     show();
 }
 
-/* Timer */
-const startDate = new Date(2025, 5, 25).getTime();
+const startDate = new Date(2025, 5, 25).getTime(); 
 setInterval(() => {
-    const d = Date.now() - startDate;
-    document.getElementById("timer").innerText =
-        Math.floor(d/86400000)+" วัน "+
-        Math.floor(d%86400000/3600000)+" ชม. "+
-        Math.floor(d%3600000/60000)+" น. "+
-        Math.floor(d%60000/1000)+" วิ";
+    const d = new Date().getTime() - startDate;
+    document.getElementById("timer").innerText = 
+        Math.floor(d/86400000)+" วัน "+Math.floor(d%86400000/3600000)+" ชม. "+
+        Math.floor(d%3600000/60000)+" น. "+Math.floor(d%60000/1000)+" วิ";
 }, 1000);
 </script>
-
 </body>
 </html>
