@@ -46,8 +46,6 @@ html, body {
     border-radius: 10px;
     border: 2px solid #ff4d94;
     outline: none;
-    -webkit-text-security: disc;
-    text-security: disc;
 }
 
 #error-text {
@@ -74,7 +72,6 @@ html, body {
     box-shadow: 0 10px 25px rgba(0,0,0,.1);
 }
 
-/* 🎥 กรอบวิดีโอ */
 .photo-frame {
     width: 160px;
     height: 160px;
@@ -115,18 +112,18 @@ html, body {
     <source src="song.mp3" type="audio/mp3">
 </audio>
 
-<!-- หน้าใส่ PIN -->
+<!-- หน้า PIN -->
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
     <p>ใส่รหัส 6 ตัว ❤️</p>
 
     <div class="pin-container">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
-        <input maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="0">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="1">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="2">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="3">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="4">
+        <input type="password" maxlength="1" inputmode="numeric" data-index="5">
     </div>
 
     <p id="error-text"></p>
@@ -137,13 +134,8 @@ html, body {
     <div class="container">
         <h1>Happy 6 Months</h1>
 
-        <!-- 🎥 วิดีโอแทนรูป -->
         <div class="photo-frame">
-            <video src="mylove.mp4"
-                   autoplay
-                   loop
-                   muted
-                   playsinline></video>
+            <video src="mylove.mp4" autoplay loop muted playsinline></video>
         </div>
 
         <p>ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอมาก ❤️</p>
@@ -159,10 +151,15 @@ const inputs = document.querySelectorAll(".pin-container input");
 
 inputs[0].focus();
 
+/* เด้งช่อง + ตรวจ PIN */
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, '');
-        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+
+        if (input.value && i < inputs.length - 1) {
+            inputs[i + 1].focus();
+        }
+
         checkPin();
     });
 
@@ -174,25 +171,32 @@ inputs.forEach((input, i) => {
 });
 
 function checkPin() {
-    const pin = Array.from(inputs).map(i => i.value).join("");
+    const pin = Array.from(inputs).map(el => el.value).join("");
+
     if (pin.length === 6) {
         if (pin === correctPassword) {
             openGift();
         } else {
             document.getElementById("error-text").innerText = "รหัสไม่ถูกต้อง 🥺";
-            inputs.forEach(i => i.value = "");
+            inputs.forEach(el => el.value = "");
             inputs[0].focus();
         }
     }
 }
 
 function openGift() {
-    document.getElementById("bg-music").play();
-    document.getElementById("welcome-screen").style.opacity = 0;
+    const welcome = document.getElementById("welcome-screen");
+    const main = document.getElementById("main-content");
+    const music = document.getElementById("bg-music");
+
+    music.volume = 0.5;
+    music.play();
+
+    welcome.style.opacity = 0;
     setTimeout(() => {
-        welcome-screen.style.display = "none";
-        document.getElementById("main-content").style.display = "flex";
-        document.getElementById("main-content").style.opacity = 1;
+        welcome.style.display = "none";
+        main.style.display = "flex";
+        setTimeout(() => main.style.opacity = 1, 50);
         startLyrics();
     }, 1000);
 }
