@@ -5,7 +5,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Anniversary!</title>
+<title>Happy 6 Months Anniversary!</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -14,11 +14,11 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Sarabun', sans-serif;
-    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);  /* ✅ พื้นหลังหลัก ใช้ที่นี่ที่เดียว */
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
     color: #d63384;
     position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow-x: hidden;          /* ป้องกันเลื่อนไปด้านข้าง */
+    overflow-y: auto;            /* เลื่อนขึ้นลงได้ ถ้าจอเตี้ย */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -57,11 +57,12 @@ h1 {
 
 /* --- Welcome Screen --- */
 #welcome-screen {
-    position: relative;
+    position: relative;  /* ไม่ fixed แล้ว */
     width: 100%;
     min-height: 100vh;
 
-    background: transparent;   /* ✅ โปร่งใส ให้เห็น gradient จาก body */
+    /* ทำพื้นหลังให้เป็นสีเดียวกับทั้งหน้า */
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
 
     display: flex;
     flex-direction: column;
@@ -74,7 +75,7 @@ h1 {
     box-sizing: border-box;
 }
 
-/* เมื่อเปิดคีย์บอร์ด */
+/* เวลาเปิดคีย์บอร์ด ให้ข้อความเลื่อนขึ้นนิดนึง */
 #welcome-screen.keyboard-open {
     justify-content: flex-start;
     padding-top: 8vh;
@@ -129,7 +130,7 @@ h1 {
 #main-content {
     display: none;
     opacity: 0;
-    min-height: 100vh;
+    min-height: 100vh;  /* พอดีกับความสูงจอ */
     justify-content: center;
     align-items: center;
     transition: opacity 1.5s ease-in-out;
@@ -137,8 +138,6 @@ h1 {
     z-index: 50;
     padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
     box-sizing: border-box;
-
-    background: transparent;   /* ✅ โปร่งใสเหมือนกัน */
 }
 
 .container {
@@ -244,6 +243,7 @@ h1 {
     }
 }
 
+/* ถ้าจอเตี้ยมาก (เช่น จอเล็ก + คีย์บอร์ด) */
 @media (max-height: 640px) {
     #welcome-screen { padding-top: 8vh; }
     .container { padding: 22px 14px; }
@@ -461,4 +461,14 @@ document.addEventListener("visibilitychange",()=>{
 });
 
 /* --- Timer --- */
-const startDate=new Da
+const startDate=new Date(2025,5,25).getTime();
+setInterval(()=>{
+ const d=Date.now()-startDate;
+ if(d<0)return;
+ document.getElementById("timer").innerText=
+ `${Math.floor(d/86400000)} วัน ${Math.floor(d%86400000/3600000)} ชม. ${Math.floor(d%3600000/60000)} น. ${Math.floor(d%60000/1000)} วิ`;
+},1000);
+</script>
+
+</body>
+</html>
