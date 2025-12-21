@@ -11,10 +11,12 @@
 <style>
 /* --- Global Styles --- */
 html, body {
-    height: 100%;
+    /* height: 100%; */             /* ❌ ของเดิม */
+    min-height: 100vh;              /* ⭐ แก้เพิ่ม: ยืดตามจอจริง */
     margin: 0;
     font-family: 'Sarabun', sans-serif;
     background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
+    background-attachment: fixed;   /* ⭐ แก้เพิ่ม: เลื่อนยังไงก็เห็นแต่ gradient */
     color: #d63384;
     position: relative;
     overflow-x: hidden;          /* ✅ ป้องกันไถลข้าง */
@@ -136,6 +138,7 @@ h1 {
     z-index: 50;
     padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
     box-sizing: border-box;
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%); /* ⭐ แก้เพิ่ม: กันพื้นขาว */
 }
 
 .container {
@@ -329,7 +332,16 @@ inputs.forEach((input,i)=>{
     });
 
     /* ⭐ keyboard safe */
-    input.addEventListener("focus",()=>welcomeScreen.classList.add("keyboard-open"));
+    input.addEventListener("focus", () => {
+        welcomeScreen.classList.add("keyboard-open");
+        // ⭐ แก้เพิ่ม: เลื่อนช่องรหัสให้อยู่กลางจอไม่โดนคีย์บอร์ดทับ
+        setTimeout(() => {
+            input.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }, 100);
+    });
     input.addEventListener("blur",()=>{
         setTimeout(()=>{
             if(![...inputs].some(i=>i===document.activeElement)){
