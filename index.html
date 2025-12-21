@@ -2,19 +2,19 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Happy 6 Months Anniversary!</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 /* --- Global Styles --- */
-* { box-sizing: border-box; }
 html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
-    touch-action: pan-y;
+    touch-action: none;
     font-family: 'Sarabun', sans-serif;
     background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
     color: #d63384;
@@ -23,12 +23,12 @@ html, body {
 
 h1 {
     font-family: 'Dancing Script', cursive;
-    font-size: clamp(2.5em, 8vw, 3.5em);
+    font-size: 3em;
     margin-bottom: 0.5em;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-/* --- Floating Hearts Animation --- */
+/* --- Floating Hearts Animation Background --- */
 .heart-bg {
     position: fixed;
     width: 100%;
@@ -37,6 +37,7 @@ h1 {
     left: 0;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
 }
 .heart {
     position: absolute;
@@ -53,7 +54,7 @@ h1 {
     100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
 
-/* --- Welcome Screen (แก้ปัญหาแป้นพิมพ์บัง) --- */
+/* --- Welcome Screen --- */
 #welcome-screen {
     position: fixed;
     inset: 0;
@@ -62,42 +63,45 @@ h1 {
     -webkit-backdrop-filter: blur(15px);
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding-top: 10vh; /* ใช้ Padding แทนการอยู่กึ่งกลางเป๊ะๆ เพื่อหลบแป้นพิมพ์ */
     text-align: center;
     z-index: 100;
     transition: opacity 1s ease-in-out;
-    box-shadow: inset 0 0 50px rgba(255,255,255,0.2);
-    overflow-y: auto; 
+}
+
+/* ⭐ keyboard safe */
+#welcome-screen.keyboard-open {
+    justify-content: flex-start;
+    padding-top: 10vh;
 }
 
 .pin-container {
     display: flex;
-    gap: clamp(8px, 2vw, 12px);
+    gap: 12px;
     margin: 30px 0;
 }
 
 .pin-container input {
-    width: clamp(45px, 12vw, 55px);
-    height: clamp(55px, 15vw, 65px);
-    font-size: 1.8rem;
+    width: 50px;
+    height: 60px;
+    font-size: 2rem;
     text-align: center;
     border-radius: 12px;
     border: 2px solid rgba(255, 128, 191, 0.5);
     outline: none;
     background-color: rgba(255, 245, 248, 0.8);
     color: #d63384;
-    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
-    transition: all 0.3s ease;
 }
 
-.pin-container input:focus {
-    border-color: #d63384;
-    transform: translateY(-3px);
-    background-color: #fff;
+#error-text {
+    color: #ff3333;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 1.5em;
 }
 
-/* Heart Explosion Effect */
+/* --- Heart Explosion Effect --- */
 .explosion-container {
     position: absolute;
     top: 50%;
@@ -134,9 +138,7 @@ h1 {
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.25);
-    padding: 30px;
+    padding: 40px;
     border-radius: 30px;
     width: 420px;
     max-width: 95%;
@@ -144,41 +146,87 @@ h1 {
 }
 
 .photo-frame {
-    width: 170px;
-    height: 170px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     overflow: hidden;
     border: 6px solid rgba(255, 153, 204, 0.8);
-    margin: 20px auto;
-    box-shadow: 0 0 30px rgba(255, 153, 204, 0.6);
+    margin: 25px auto;
     animation: heartbeat 3s ease-in-out infinite;
 }
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-.photo-frame video { width: 100%; height: 100%; object-fit: cover; }
 
-.message-text { font-size: 1.1rem; line-height: 1.6; min-height: 3.2em; margin-bottom: 10px; }
-.cursor { display: inline-block; width: 2px; background-color: #d63384; animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.photo-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Typewriter Style --- */
+.message-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    min-height: 3.2em;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    background-color: #d63384;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
 
 .lyric-text {
-    font-weight: bold; font-size: 1.3rem; color: #ff508a; min-height: 2.5em;
-    display: flex; justify-content: center; align-items: center;
-    font-family: 'Dancing Script', cursive; opacity: 0; transition: all 0.8s ease;
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #ff508a;
+    opacity: 0;
+    transition: all 0.8s ease;
+    min-height: 2.5em;
+    font-family: 'Dancing Script', cursive;
 }
-.lyric-text.visible { opacity: 1; transform: translateY(0); }
-
-.progress-container {
-    width: 80%; height: 6px; background: rgba(255, 255, 255, 0.4);
-    border-radius: 10px; margin: 20px auto; overflow: hidden;
+.lyric-text.visible {
+    opacity: 1;
 }
-.progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #ff99cc, #ff3366); transition: width 0.1s linear; }
 
 .timer {
-    margin-top: 15px; font-weight: bold; color: #ff6699; background: rgba(255, 240, 245, 0.5);
-    padding: 10px 20px; border-radius: 20px; display: inline-block;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #ff6699;
+}
+
+/* --- Progress Bar --- */
+.progress-container {
+    width: 80%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    margin: 25px auto 5px auto;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff99cc, #ff3366);
+}
+
+/* 📱 Responsive */
+@media (max-width: 480px) {
+    h1 { font-size: 2.3em; }
+    .container { padding: 25px 20px; }
+    .photo-frame { width:150px; height:150px; }
+    .message-text { font-size:1rem; }
+    .lyric-text { font-size:1.1rem; }
 }
 </style>
 </head>
@@ -186,31 +234,42 @@ h1 {
 <body>
 
 <div class="heart-bg" id="heart-bg"></div>
-<audio id="bg-music"><source src="song.mp3" type="audio/mp3"></audio>
+
+<audio id="bg-music">
+    <source src="song.mp3" type="audio/mp3">
+</audio>
 
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
-    <p style="font-size: 1.2rem;">ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
+    <p>ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
+
     <div class="pin-container">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
-        <input type="number" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="password" maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric">
+        <input type="password" maxlength="1" inputmode="numeric">
     </div>
-    <p id="error-text" style="color:#ff3333; font-weight:bold;"></p>
+
+    <p id="error-text"></p>
 </div>
 
 <div id="main-content">
     <div class="container">
         <h1>Happy 6 Months!</h1>
+
         <div class="photo-frame">
             <video src="mylove.mp4" autoplay loop muted playsinline></video>
         </div>
+
         <p class="message-text" id="typing-text"></p>
         <div id="lyric-text" class="lyric-text"></div>
-        <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
         <div class="timer" id="timer"></div>
     </div>
 </div>
@@ -219,144 +278,166 @@ h1 {
 const correctPassword = "250625";
 const inputs = document.querySelectorAll(".pin-container input");
 const music = document.getElementById("bg-music");
+const lyricEl = document.getElementById("lyric-text");
 const welcomeScreen = document.getElementById("welcome-screen");
 const mainContent = document.getElementById("main-content");
+const errorText = document.getElementById("error-text");
+const progressBar = document.getElementById("progress-bar");
 
-// --- 1. เพลงหยุดเมื่อพับจอ (Visibility Change) ---
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        music.pause();
-    } else {
-        // เล่นต่อเฉพาะถ้าล็อกอินเข้าไปแล้ว
-        if (welcomeScreen.style.display === "none") {
-            music.play().catch(() => {});
-        }
-    }
-});
-
-// --- 2. Input Logic (แก้เรื่องแป้นพิมพ์) ---
-inputs.forEach((input, i) => {
-    input.addEventListener("input", (e) => {
-        // จำกัดให้ใส่แค่ตัวเดียว (เผื่อมือถือบางรุ่นบั๊ก)
-        if (input.value.length > 1) input.value = input.value.slice(0, 1);
-        
-        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
-        
-        const pin = [...inputs].map(inp => inp.value).join("");
-        if (pin.length === 6) {
-            if (pin === correctPassword) {
-                inputs.forEach(inp => inp.blur()); // เอาแป้นพิมพ์ออก
-                playExplosionEffect();
-                setTimeout(openGift, 800);
-            } else {
-                document.getElementById("error-text").innerText = "รหัสผิดอะ ลองใหม่นะ 🥺";
-                inputs.forEach(inp => inp.value = "");
-                inputs[0].focus();
-                setTimeout(() => { document.getElementById("error-text").innerText = ""; }, 2000);
-            }
-        }
-    });
-    input.addEventListener("keydown", e => {
-        if (e.key === "Backspace" && !input.value && i > 0) inputs[i - 1].focus();
-    });
-});
-
-function openGift() {
-    welcomeScreen.style.opacity = 0;
-    setTimeout(() => {
-        welcomeScreen.style.display = "none";
-        mainContent.style.display = "flex";
-        setTimeout(() => {
-            mainContent.style.opacity = 1;
-            music.play();
-            startTypewriter();
-            startLyrics();
-        }, 50);
-    }, 1000);
-}
-
-// --- 3. Heart Explosion (จากโค้ดเดิมของคุณ) ---
-function playExplosionEffect() {
-    const container = document.createElement('div');
-    container.classList.add('explosion-container');
-    welcomeScreen.appendChild(container);
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('exploding-heart');
-        heart.innerHTML = '💖';
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 150 + 50;
-        const x = Math.cos(angle) * distance + 'px';
-        const y = Math.sin(angle) * distance + 'px';
-        heart.style.setProperty('--x', x);
-        heart.style.setProperty('--y', y);
-        container.appendChild(heart);
-    }
-    setTimeout(() => container.remove(), 1000);
-}
-
-// --- 4. Typewriter & Lyrics & Timer (เหมือนเดิม) ---
-const messageToType = "ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️";
-let typeIndex = 0;
-function startTypewriter() {
-    const el = document.getElementById("typing-text");
-    el.innerHTML = '<span class="cursor"></span>';
-    function type() {
-        if (typeIndex < messageToType.length) {
-            let char = messageToType.charAt(typeIndex);
-            if (messageToType.substring(typeIndex, typeIndex + 4) === "<br>") {
-                char = "<br>"; typeIndex += 3;
-            }
-            el.querySelector('.cursor').insertAdjacentHTML('beforebegin', char);
-            typeIndex++;
-            setTimeout(type, 100);
-        }
-    }
-    type();
-}
-
-const lyricsTiming = [
-    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
-    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5300 },
-    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5400 }
-];
-let lIndex = 0;
-function startLyrics() {
-    if (lIndex >= lyricsTiming.length) return;
-    const el = document.getElementById("lyric-text");
-    el.textContent = lyricsTiming[lIndex].text;
-    el.classList.add("visible");
-    setTimeout(() => {
-        el.classList.remove("visible");
-        lIndex++;
-        setTimeout(startLyrics, 800);
-    }, lyricsTiming[lIndex].duration);
-}
-
-music.addEventListener("timeupdate", () => {
-    document.getElementById("progress-bar").style.width = (music.currentTime / music.duration * 100) + "%";
-});
-
-const startDate = new Date(2025, 5, 25).getTime();
-setInterval(() => {
-    const d = Date.now() - startDate;
-    const days = Math.floor(d / 86400000);
-    const hrs = Math.floor((d % 86400000) / 3600000);
-    const mins = Math.floor((d % 3600000) / 60000);
-    const secs = Math.floor((d % 60000) / 1000);
-    document.getElementById("timer").innerText = `${days} วัน ${hrs} ชม. ${mins} น. ${secs} วิ`;
-}, 1000);
-
-// Background Hearts
+/* --- Floating Hearts --- */
+const heartBg = document.getElementById('heart-bg');
+const heartSymbols = ['❤️','💖','💗','💓','💕'];
 setInterval(() => {
     const h = document.createElement('div');
-    h.classList.add('heart');
-    h.innerHTML = '❤️';
-    h.style.left = Math.random() * 100 + 'vw';
-    document.getElementById('heart-bg').appendChild(h);
-    setTimeout(() => h.remove(), 6000);
-}, 800);
+    h.className = 'heart';
+    h.textContent = heartSymbols[Math.floor(Math.random()*heartSymbols.length)];
+    h.style.left = Math.random()*100+'vw';
+    heartBg.appendChild(h);
+    setTimeout(()=>h.remove(),9000);
+},800);
+
+/* --- Input Logic --- */
+inputs[0].focus();
+inputs.forEach((input,i)=>{
+    input.addEventListener("input",()=>{
+        input.value = input.value.replace(/\D/g,'');
+        if(input.value && i<inputs.length-1) inputs[i+1].focus();
+        checkPin();
+    });
+    input.addEventListener("keydown",e=>{
+        if(e.key==="Backspace" && !input.value && i>0) inputs[i-1].focus();
+    });
+
+    /* ⭐ keyboard safe */
+    input.addEventListener("focus",()=>welcomeScreen.classList.add("keyboard-open"));
+    input.addEventListener("blur",()=>{
+        setTimeout(()=>{
+            if(![...inputs].some(i=>i===document.activeElement)){
+                welcomeScreen.classList.remove("keyboard-open");
+            }
+        },100);
+    });
+});
+
+function checkPin(){
+    const pin=[...inputs].map(i=>i.value).join("");
+    if(pin.length===6){
+        if(pin===correctPassword){
+            playExplosionEffect();
+            setTimeout(openGift,800);
+        }else{
+            errorText.innerText="รหัสผิดอะ ลองใหม่ซิ 🥺";
+            inputs.forEach(i=>i.value="");
+            inputs[0].focus();
+            setTimeout(()=>errorText.innerText="",2000);
+        }
+    }
+}
+
+/* --- Explosion --- */
+function playExplosionEffect(){
+    const c=document.createElement('div');
+    c.className='explosion-container';
+    welcomeScreen.appendChild(c);
+    for(let i=0;i<20;i++){
+        const h=document.createElement('div');
+        h.className='exploding-heart';
+        h.textContent='💖';
+        const a=Math.random()*Math.PI*2;
+        const d=Math.random()*150+50;
+        h.style.setProperty('--x',Math.cos(a)*d+'px');
+        h.style.setProperty('--y',Math.sin(a)*d+'px');
+        c.appendChild(h);
+    }
+    setTimeout(()=>c.remove(),1000);
+}
+
+/* --- Typewriter --- */
+const messageToType="ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️";
+let typeIndex=0;
+function startTypewriter(){
+    const el=document.getElementById("typing-text");
+    el.innerHTML='<span class="cursor"></span>';
+    (function type(){
+        if(typeIndex<messageToType.length){
+            let ch=messageToType.substring(typeIndex,typeIndex+4)==="<br>"?"<br>":messageToType[typeIndex];
+            typeIndex+=ch==="<br>"?4:1;
+            el.querySelector('.cursor').insertAdjacentHTML("beforebegin",ch);
+            setTimeout(type,80);
+        }
+    })();
+}
+
+/* --- Lyrics --- */
+const LYRIC_INTRO_DELAY=1500;
+const lyricsWithTiming=[
+ {text:"เธอเพียงคนเดียวและเพียงเธอที่ต้องการ",duration:4200},
+ {text:"ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ",duration:4500},
+ {text:"นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด",duration:5300},
+ {text:"ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️",duration:5400}
+];
+let lyricIndex=0,lyricTimer=null;
+function resetLyrics(){
+ if(lyricTimer)clearTimeout(lyricTimer);
+ lyricIndex=0; lyricEl.textContent=""; lyricEl.classList.remove("visible");
+}
+function startLyrics(){
+ if(lyricIndex>=lyricsWithTiming.length)return;
+ lyricEl.textContent=lyricsWithTiming[lyricIndex].text;
+ lyricEl.classList.add("visible");
+ lyricTimer=setTimeout(()=>{
+   lyricEl.classList.remove("visible");
+   lyricIndex++;
+   setTimeout(startLyrics,800);
+ },lyricsWithTiming[lyricIndex].duration);
+}
+
+/* --- Open Gift --- */
+function openGift(){
+ welcomeScreen.style.opacity=0;
+ setTimeout(()=>{
+   welcomeScreen.style.display="none";
+   mainContent.style.display="flex";
+   requestAnimationFrame(()=>{
+     mainContent.style.opacity=1;
+     music.play().catch(()=>{});
+     setTimeout(startTypewriter,1000);
+     resetLyrics();
+     setTimeout(startLyrics,LYRIC_INTRO_DELAY);
+   });
+ },1000);
+}
+
+/* --- Music Events --- */
+music.addEventListener("ended",()=>{
+ resetLyrics();
+ music.currentTime=0;
+ progressBar.style.width="0%";
+ music.play();
+ setTimeout(startLyrics,LYRIC_INTRO_DELAY);
+});
+
+music.addEventListener("timeupdate",()=>{
+ if(music.duration){
+   progressBar.style.width=(music.currentTime/music.duration*100)+"%";
+ }
+});
+
+/* ⭐ stop music when tab inactive */
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden) music.pause();
+ else if(music.currentTime>0) music.play().catch(()=>{});
+});
+
+/* --- Timer --- */
+const startDate=new Date(2025,5,25).getTime();
+setInterval(()=>{
+ const d=Date.now()-startDate;
+ if(d<0)return;
+ document.getElementById("timer").innerText=
+ `${Math.floor(d/86400000)} วัน ${Math.floor(d%86400000/3600000)} ชม. ${Math.floor(d%3600000/60000)} น. ${Math.floor(d%60000/1000)} วิ`;
+},1000);
 </script>
+
 </body>
 </html>
