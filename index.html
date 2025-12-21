@@ -13,12 +13,13 @@
 html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden;
-    touch-action: none;
     font-family: 'Sarabun', sans-serif;
     background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
     color: #d63384;
     position: relative;
+    overflow-x: hidden;          /* ✅ ป้องกันไถลข้าง */
+    overflow-y: auto;            /* ✅ เลื่อนแนวตั้งได้ ถ้าจอเตี้ย */
+    -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
@@ -68,6 +69,8 @@ h1 {
     text-align: center;
     z-index: 100;
     transition: opacity 1s ease-in-out;
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom)); /* ✅ กันโดนชนขอบล่าง */
+    box-sizing: border-box;
 }
 
 /* ⭐ keyboard safe */
@@ -125,24 +128,27 @@ h1 {
 #main-content {
     display: none;
     opacity: 0;
-    height: 100vh;
+    min-height: 100vh;  /* ✅ พอดีกับความสูงจอ */
     justify-content: center;
     align-items: center;
     transition: opacity 1.5s ease-in-out;
     position: relative;
     z-index: 50;
-    padding: 20px;
+    padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
+    box-sizing: border-box;
 }
 
 .container {
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 40px;
+    padding: 40px 30px;
     border-radius: 30px;
-    width: 420px;
-    max-width: 95%;
+    width: 100%;
+    max-width: 420px;   /* ✅ ล็อกความกว้างกลางจอ */
     text-align: center;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .photo-frame {
@@ -220,13 +226,27 @@ h1 {
     background: linear-gradient(90deg, #ff99cc, #ff3366);
 }
 
-/* 📱 Responsive */
+/* 📱 Responsive: จอเล็กแนวนอน / จอเตี้ย */
 @media (max-width: 480px) {
     h1 { font-size: 2.3em; }
-    .container { padding: 25px 20px; }
+    .container { padding: 28px 18px; }
     .photo-frame { width:150px; height:150px; }
     .message-text { font-size:1rem; }
     .lyric-text { font-size:1.1rem; }
+    .pin-container { gap: 8px; }
+    .pin-container input {
+        width: 42px;
+        height: 52px;
+        font-size: 1.6rem;
+    }
+}
+
+/* ถ้าจอเตี้ยมาก (เช่น 18:9 + แป้นพิมพ์) */
+@media (max-height: 640px) {
+    #welcome-screen { padding-top: 8vh; }
+    .container { padding: 22px 14px; }
+    .photo-frame { width:130px; height:130px; margin:18px auto; }
+    h1 { font-size: 2em; }
 }
 </style>
 </head>
@@ -441,4 +461,3 @@ setInterval(()=>{
 
 </body>
 </html>
-ทำเป็น pwa web app 
