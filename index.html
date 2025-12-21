@@ -17,8 +17,8 @@ html, body {
     background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
     color: #d63384;
     position: relative;
-    overflow-x: hidden;          /* ✅ ป้องกันไถลข้าง */
-    overflow-y: auto;            /* ✅ เลื่อนแนวตั้งได้ ถ้าจอเตี้ย */
+    overflow-x: hidden;          /* ป้องกันเลื่อนไปด้านข้าง */
+    overflow-y: auto;            /* เลื่อนขึ้นลงได้ ถ้าจอเตี้ย */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -57,11 +57,13 @@ h1 {
 
 /* --- Welcome Screen --- */
 #welcome-screen {
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 204, 221, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    position: relative;  /* ไม่ fixed แล้ว */
+    width: 100%;
+    min-height: 100vh;
+
+    /* ทำพื้นหลังให้เป็นสีเดียวกับทั้งหน้า */
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -69,14 +71,14 @@ h1 {
     text-align: center;
     z-index: 100;
     transition: opacity 1s ease-in-out;
-    padding: 24px 16px calc(24px + env(safe-area-inset-bottom)); /* ✅ กันโดนชนขอบล่าง */
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
     box-sizing: border-box;
 }
 
-/* ⭐ keyboard safe */
+/* เวลาเปิดคีย์บอร์ด ให้ข้อความเลื่อนขึ้นนิดนึง */
 #welcome-screen.keyboard-open {
     justify-content: flex-start;
-    padding-top: 10vh;
+    padding-top: 8vh;
 }
 
 .pin-container {
@@ -128,7 +130,7 @@ h1 {
 #main-content {
     display: none;
     opacity: 0;
-    min-height: 100vh;  /* ✅ พอดีกับความสูงจอ */
+    min-height: 100vh;  /* พอดีกับความสูงจอ */
     justify-content: center;
     align-items: center;
     transition: opacity 1.5s ease-in-out;
@@ -145,7 +147,7 @@ h1 {
     padding: 40px 30px;
     border-radius: 30px;
     width: 100%;
-    max-width: 420px;   /* ✅ ล็อกความกว้างกลางจอ */
+    max-width: 420px;
     text-align: center;
     box-sizing: border-box;
     margin: 0 auto;
@@ -226,7 +228,7 @@ h1 {
     background: linear-gradient(90deg, #ff99cc, #ff3366);
 }
 
-/* 📱 Responsive: จอเล็กแนวนอน / จอเตี้ย */
+/* 📱 Responsive */
 @media (max-width: 480px) {
     h1 { font-size: 2.3em; }
     .container { padding: 28px 18px; }
@@ -241,7 +243,7 @@ h1 {
     }
 }
 
-/* ถ้าจอเตี้ยมาก (เช่น 18:9 + แป้นพิมพ์) */
+/* ถ้าจอเตี้ยมาก (เช่น จอเล็ก + คีย์บอร์ด) */
 @media (max-height: 640px) {
     #welcome-screen { padding-top: 8vh; }
     .container { padding: 22px 14px; }
@@ -328,8 +330,17 @@ inputs.forEach((input,i)=>{
         if(e.key==="Backspace" && !input.value && i>0) inputs[i-1].focus();
     });
 
-    /* ⭐ keyboard safe */
-    input.addEventListener("focus",()=>welcomeScreen.classList.add("keyboard-open"));
+    /* เวลาโฟกัสให้เลื่อนขึ้นกลางจอ กันโดนคีย์บอร์ดบัง */
+    input.addEventListener("focus", () => {
+        welcomeScreen.classList.add("keyboard-open");
+        setTimeout(() => {
+            input.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }, 100);
+    });
+
     input.addEventListener("blur",()=>{
         setTimeout(()=>{
             if(![...inputs].some(i=>i===document.activeElement)){
@@ -443,7 +454,7 @@ music.addEventListener("timeupdate",()=>{
  }
 });
 
-/* ⭐ stop music when tab inactive */
+/* หยุดเพลงตอนออกจากแท็บ */
 document.addEventListener("visibilitychange",()=>{
  if(document.hidden) music.pause();
  else if(music.currentTime>0) music.play().catch(()=>{});
