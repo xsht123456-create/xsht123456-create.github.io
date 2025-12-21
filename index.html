@@ -59,8 +59,10 @@ h1 {
 
 /* --- Welcome Screen --- */
 #welcome-screen {
-    position: fixed;
+    position: absolute;   /* ⭐ แก้ fixed → absolute */
     inset: 0;
+    min-height: 100vh;    /* ⭐ ให้กินพื้นที่จอจริง */
+    width: 100%;
     background: rgba(255, 204, 221, 0.6);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -71,9 +73,10 @@ h1 {
     text-align: center;
     z-index: 100;
     transition: opacity 1s ease-in-out;
-    padding: 24px 16px calc(24px + env(safe-area-inset-bottom)); /* ✅ กันโดนชนขอบล่าง */
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
     box-sizing: border-box;
 }
+
 
 /* ⭐ keyboard safe */
 #welcome-screen.keyboard-open {
