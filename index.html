@@ -16,17 +16,17 @@ html, body {
     overflow: hidden;
     touch-action: none;
     font-family: 'Sarabun', sans-serif;
-    background: #ffe6e6; /* สีพื้นหลังชมพูอ่อน */
-    color: #d63384; /* สีข้อความหลัก */
-    position: relative; /* สำหรับ floating hearts */
+    /* เปลี่ยนพื้นหลังเป็น Gradient อ่อนๆ เพื่อให้ Glassmorphism ชัดขึ้น */
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
+    color: #d63384;
+    position: relative;
 }
 
-/* ใช้ฟอนต์ลายมือกับหัวข้อ */
 h1 {
     font-family: 'Dancing Script', cursive;
     font-size: 3em;
     margin-bottom: 0.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* เพิ่มเงาให้ตัวหนังสือ */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 /* --- Floating Hearts Animation Background --- */
@@ -37,7 +37,7 @@ h1 {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 0; /* อยู่หลังสุด */
+    z-index: 0;
     overflow: hidden;
 }
 .heart {
@@ -55,24 +55,27 @@ h1 {
     100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
 
-/* --- Welcome Screen --- */
+/* --- Welcome Screen (Glassmorphism Enhanced) --- */
 #welcome-screen {
     position: fixed;
     inset: 0;
-    background: rgba(255, 204, 221, 0.95); /* เพิ่มความโปร่งใสเล็กน้อย */
-    backdrop-filter: blur(5px); /* เพิ่มเบลอฉากหลัง */
+    /* Glassmorphism Effect */
+    background: rgba(255, 204, 221, 0.6); /* โปร่งแสงมากขึ้น */
+    backdrop-filter: blur(15px); /* เบลอฉากหลังหนักขึ้น */
+    -webkit-backdrop-filter: blur(15px); /* สำหรับ Safari */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 100; /* อยู่เหนือ background */
-    transition: opacity 1s ease-in-out; /* ปรับ transition ให้นุ่มขึ้น */
+    z-index: 100;
+    transition: opacity 1s ease-in-out;
+    box-shadow: inset 0 0 50px rgba(255,255,255,0.2);
 }
 
 .pin-container {
     display: flex;
-    gap: 12px; /* เพิ่มระยะห่าง */
+    gap: 12px;
     margin: 30px 0;
 }
 
@@ -82,25 +85,29 @@ h1 {
     font-size: 2rem;
     text-align: center;
     border-radius: 12px;
-    border: 3px solid #ff80bf; /* เปลี่ยนสีขอบให้ละมุนขึ้น */
+    /* ปรับ input ให้เข้ากับ glass theme */
+    border: 2px solid rgba(255, 128, 191, 0.5);
     outline: none;
-    background-color: #fff5f8;
+    background-color: rgba(255, 245, 248, 0.8); /* พื้นหลัง input โปร่งแสงนิดๆ */
     color: #d63384;
-    box-shadow: 0 4px 8px rgba(255, 128, 191, 0.3); /* เพิ่มเงา */
+    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .pin-container input:focus {
     border-color: #d63384;
-    transform: translateY(-3px); /* ขยับขึ้นเล็กน้อยตอนกด */
-    box-shadow: 0 6px 12px rgba(214, 51, 132, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
+    background-color: #fff;
 }
 
 #error-text {
     color: #ff3333;
     margin-top: 15px;
     font-weight: bold;
-    min-height: 1.5em; /* จองพื้นที่ไว้ไม่ให้กระตุก */
+    min-height: 1.5em;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
 }
 
 /* Heart Explosion Effect */
@@ -132,29 +139,44 @@ h1 {
     align-items: center;
     transition: opacity 1.5s ease-in-out;
     position: relative;
-    z-index: 50; /* อยู่เหนือ background แต่ใต้ welcome screen ตอนแรก */
+    z-index: 50;
+    padding: 20px; /* เพิ่ม padding กันชนขอบจอ */
 }
 
+/* --- Glassmorphism Container --- */
 .container {
-    background: rgba(255, 255, 255, 0.9); /* พื้นหลังขาวโปร่งแสง */
+    /* Glassmorphism Style */
+    background: rgba(255, 255, 255, 0.3); /* พื้นหลังขาวโปร่งแสงมาก */
+    backdrop-filter: blur(20px); /* เบลอฉากหลัง */
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5); /* ขอบสีขาวจางๆ */
+    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.25), inset 0 0 20px rgba(255,255,255,0.3); /* เงาแบบมีมิติ */
+
     padding: 40px;
-    border-radius: 25px;
-    width: 380px;
-    max-width: 90%;
+    border-radius: 30px; /* เพิ่มความโค้งมน */
+    width: 420px; /* ขยายความกว้างเล็กน้อย */
+    max-width: 95%;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); /* เงาสีชมพู */
-    border: 2px solid #ffd1dc; /* เพิ่มขอบสีชมพูอ่อน */
 }
 
+/* --- 3D Photo Frame --- */
 .photo-frame {
     width: 180px;
     height: 180px;
     border-radius: 50%;
     overflow: hidden;
-    border: 6px solid #ff99cc;
+    border: 6px solid rgba(255, 153, 204, 0.8); /* ขอบโปร่งแสงนิดๆ */
     margin: 25px auto;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     position: relative;
+    /* 3D Glow & Heartbeat Animation */
+    box-shadow: 0 0 30px rgba(255, 153, 204, 0.6), 0 10px 20px rgba(0,0,0,0.1);
+    animation: heartbeat 3s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 153, 204, 0.6), 0 10px 20px rgba(0,0,0,0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 153, 204, 0.8), 0 15px 25px rgba(0,0,0,0.15); } /* ขยายและเรืองแสงมากขึ้น */
+    100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 153, 204, 0.6), 0 10px 20px rgba(0,0,0,0.1); }
 }
 
 .photo-frame video {
@@ -168,27 +190,29 @@ h1 {
     line-height: 1.6;
     margin-bottom: 20px;
     color: #d63384;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 .lyric-text {
     font-weight: bold;
-    font-size: 1.2rem;
-    color: #ff6699;
+    font-size: 1.3rem; /* เพิ่มขนาดนิดหน่อย */
+    color: #ff508a; /* สีเข้มขึ้นเล็กน้อยให้อ่านง่ายบนกระจก */
     opacity: 0;
-    transition: all 0.8s ease; /* ปรับ transition */
+    transition: all 0.8s ease;
     min-height: 2.5em;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Dancing Script', cursive; /* ใช้ฟอนต์ลายมือกับเนื้อเพลงด้วย */
+    font-family: 'Dancing Script', cursive;
+    text-shadow: 0 2px 4px rgba(255,255,255,0.8); /* เพิ่มเงาขาวให้ตัวหนังสือลอยเด่น */
 }
 
 .lyric-text.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 .lyric-text:not(.visible) {
-    transform: translateY(10px); /* เลื่อนลงเล็กน้อยตอนซ่อน */
+    transform: translateY(10px) scale(0.95);
 }
 
 .timer {
@@ -196,12 +220,36 @@ h1 {
     font-weight: bold;
     color: #ff6699;
     font-size: 1.1rem;
-    background: #fff0f5;
+    /* ปรับ Timer ให้เข้ากับธีมกระจก */
+    background: rgba(255, 240, 245, 0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.6);
     padding: 10px 20px;
     border-radius: 20px;
     display: inline-block;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(214, 51, 132, 0.1);
 }
+
+/* --- Progress Bar Styles --- */
+.progress-container {
+    width: 80%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.4); /* พื้นหลังบาร์โปร่งแสง */
+    border-radius: 10px;
+    margin: 25px auto 5px auto; /* จัดกึ่งกลางและเว้นระยะ */
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.progress-bar {
+    height: 100%;
+    width: 0%; /* เริ่มต้นที่ 0% */
+    background: linear-gradient(90deg, #ff99cc, #ff3366); /* ไล่สีชมพู */
+    border-radius: 10px;
+    transition: width 0.1s linear; /* เคลื่อนไหวสมูท */
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.5); /* เงาเรืองแสงให้บาร์ */
+}
+
 </style>
 </head>
 
@@ -215,7 +263,7 @@ h1 {
 
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
-    <p style="font-size: 1.2rem;">ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
+    <p style="font-size: 1.2rem; text-shadow: 0 1px 1px rgba(255,255,255,0.5);">ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
 
     <div class="pin-container">
         <input type="password" maxlength="1" inputmode="numeric">
@@ -240,6 +288,11 @@ h1 {
         <p class="message-text">ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️</p>
 
         <div id="lyric-text" class="lyric-text"></div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
         <div class="timer" id="timer"></div>
     </div>
 </div>
@@ -252,6 +305,8 @@ const lyricEl = document.getElementById("lyric-text");
 const welcomeScreen = document.getElementById("welcome-screen");
 const mainContent = document.getElementById("main-content");
 const errorText = document.getElementById("error-text");
+// เพิ่มตัวแปร Progress Bar
+const progressBar = document.getElementById("progress-bar");
 
 // --- Floating Hearts Animation ---
 const heartBg = document.getElementById('heart-bg');
@@ -262,16 +317,16 @@ function createHeart() {
     heart.classList.add('heart');
     heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
     heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.fontSize = (Math.random() * 20 + 15) + 'px'; // ขนาด 15-35px
-    heart.style.animationDuration = (Math.random() * 5 + 4) + 's'; // ความเร็ว 4-9s
+    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    heart.style.animationDuration = (Math.random() * 5 + 4) + 's';
     heart.style.animationDelay = Math.random() * 2 + 's';
     heartBg.appendChild(heart);
 
     setTimeout(() => {
         heart.remove();
-    }, 9000); // ลบออกเมื่ออนิเมชั่นจบ
+    }, 9000);
 }
-setInterval(createHeart, 800); // สร้างหัวใจใหม่ทุก 0.8 วินาที
+setInterval(createHeart, 800);
 
 
 // --- Input Logic ---
@@ -293,15 +348,14 @@ function checkPin() {
     const pin = [...inputs].map(i => i.value).join("");
     if (pin.length === 6) {
         if (pin === correctPassword) {
-            errorText.innerText = ""; // เคลียร์ข้อความ error
-            inputs.forEach(i => i.blur()); // เอา focus ออก
-            playExplosionEffect(); // เล่นเอฟเฟกต์หัวใจระเบิด
-            setTimeout(openGift, 800); // รอเอฟเฟกต์จบแล้วค่อยเปลี่ยนหน้า
+            errorText.innerText = "";
+            inputs.forEach(i => i.blur());
+            playExplosionEffect();
+            setTimeout(openGift, 800);
         } else {
             errorText.innerText = "รหัสผิดอะ ลองใหม่ซิ 🥺";
             inputs.forEach(i => {
                 i.value = "";
-                i.classList.add("error"); // (Optional) Could add shake animation class here
             });
             inputs[0].focus();
             setTimeout(() => errorText.innerText = "", 2000);
@@ -319,7 +373,6 @@ function playExplosionEffect() {
         const heart = document.createElement('div');
         heart.classList.add('exploding-heart');
         heart.innerHTML = '💖';
-        // Random direction and distance
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.random() * 150 + 50;
         const x = Math.cos(angle) * distance + 'px';
@@ -335,28 +388,27 @@ function playExplosionEffect() {
 
 // --- Transition to Main Content ---
 function openGift() {
-    welcomeScreen.style.opacity = 0; // Fade out
+    welcomeScreen.style.opacity = 0;
 
     setTimeout(() => {
         welcomeScreen.style.display = "none";
         mainContent.style.display = "flex";
 
-        // ใช้ requestAnimationFrame เพื่อให้แน่ใจว่า display: flex ทำงานแล้วก่อนเริ่ม fade in
         requestAnimationFrame(() => {
-            mainContent.style.opacity = 1; // Fade in
+            mainContent.style.opacity = 1;
 
             music.currentTime = 0;
-            music.volume = 0.6; // เพิ่มเสียงขึ้นเล็กน้อย
-            music.play().catch(e => console.log("Auto-play blocked:", e)); // จัดการกรณี browser บล็อก auto-play
+            music.volume = 0.6;
+            music.play().catch(e => console.log("Auto-play blocked:", e));
 
             resetLyrics();
             setTimeout(startLyrics, LYRIC_INTRO_DELAY);
         });
-    }, 1000); // รอให้ welcomeScreen fade out จนสุด (ตรงกับ CSS transition 1s)
+    }, 1000);
 }
 
-// --- Lyrics Logic (เหมือนเดิม) ---
-const LYRIC_INTRO_DELAY = 1500; // เพิ่ม delay เล็กน้อย
+// --- Lyrics Logic ---
+const LYRIC_INTRO_DELAY = 1500;
 
 const lyricsWithTiming = [
     { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
@@ -384,28 +436,36 @@ function startLyrics() {
     lyricTimer = setTimeout(() => {
         lyricEl.classList.remove("visible");
         lyricIndex++;
-        lyricTimer = setTimeout(startLyrics, 800); // เวลาพักระหว่างวรรค
+        lyricTimer = setTimeout(startLyrics, 800);
     }, lyricsWithTiming[lyricIndex].duration);
 }
 
 music.addEventListener("ended", () => {
     resetLyrics();
     music.currentTime = 0;
+    progressBar.style.width = "0%"; // รีเซ็ต Progress Bar เมื่อเพลงจบ
     music.play();
     setTimeout(startLyrics, LYRIC_INTRO_DELAY);
 });
 
-/* --- Timer Logic (เหมือนเดิม) --- */
-// **สำคัญ** ตรวจสอบวันที่เริ่มคบกันให้ถูกต้อง (ปี, เดือน-1, วัน)
-// เดือนเริ่มนับจาก 0 (มกราคม = 0, มิถุนายน = 5)
-// ตัวอย่าง: ถ้าเริ่มคบ 25 ธันวาคม 2024 -> new Date(2024, 11, 25)
-const startDate = new Date(2025, 5, 25).getTime(); // แก้ไขวันที่ตรงนี้!
+// --- Progress Bar Logic (เพิ่มใหม่) ---
+// อัปเดต Progress Bar ตามเวลาเพลง
+music.addEventListener("timeupdate", () => {
+    if (music.duration) {
+        const progressPercent = (music.currentTime / music.duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+    }
+});
+
+
+/* --- Timer Logic --- */
+// **อย่าลืมตรวจสอบวันที่ตรงนี้ให้ถูกต้องนะครับ**
+const startDate = new Date(2025, 5, 25).getTime(); // เดือนมิถุนายนคือเลข 5
 
 setInterval(() => {
     const now = Date.now();
     const d = now - startDate;
 
-    // ป้องกันเวลาติดลบกรณีตั้งวันที่ในอนาคต
     if (d < 0) {
          document.getElementById("timer").innerText = "Coming Soon...";
          return;
