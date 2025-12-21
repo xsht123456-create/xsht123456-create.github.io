@@ -28,7 +28,7 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-/* --- Floating Hearts Background --- */
+/* --- Floating Hearts Animation Background --- */
 .heart-bg {
     position: fixed;
     width: 100%;
@@ -37,6 +37,7 @@ h1 {
     left: 0;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
 }
 .heart {
     position: absolute;
@@ -53,7 +54,7 @@ h1 {
     100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
 
-/* --- Welcome Screen (Glassmorphism) --- */
+/* --- Welcome Screen --- */
 #welcome-screen {
     position: fixed;
     inset: 0;
@@ -64,8 +65,10 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     z-index: 100;
     transition: opacity 1s ease-in-out;
+    box-shadow: inset 0 0 50px rgba(255,255,255,0.2);
 }
 
 .pin-container {
@@ -81,15 +84,47 @@ h1 {
     text-align: center;
     border-radius: 12px;
     border: 2px solid rgba(255, 128, 191, 0.5);
-    background: rgba(255, 245, 248, 0.8);
+    outline: none;
+    background-color: rgba(255, 245, 248, 0.8);
     color: #d63384;
+    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .pin-container input:focus {
-    transform: translateY(-3px);
     border-color: #d63384;
-    background: #fff;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
+    background-color: #fff;
+}
+
+#error-text {
+    color: #ff3333;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 1.5em;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Heart Explosion Effect */
+.explosion-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 101;
+}
+.exploding-heart {
+    position: absolute;
+    font-size: 24px;
+    color: #ff3366;
+    animation: explode 0.8s ease-out forwards;
+}
+@keyframes explode {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
 
 /* --- Main Content --- */
@@ -100,7 +135,9 @@ h1 {
     justify-content: center;
     align-items: center;
     transition: opacity 1.5s ease-in-out;
+    position: relative;
     z-index: 50;
+    padding: 20px;
 }
 
 .container {
@@ -108,45 +145,95 @@ h1 {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.2), inset 0 0 20px rgba(255,255,255,0.2);
-    padding: 30px;
+    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.25), inset 0 0 20px rgba(255,255,255,0.3);
+    padding: 40px;
     border-radius: 30px;
-    width: 400px;
-    max-width: 90%;
+    width: 420px;
+    max-width: 95%;
     text-align: center;
 }
 
-/* --- 3D Photo Frame --- */
 .photo-frame {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     overflow: hidden;
     border: 6px solid rgba(255, 153, 204, 0.8);
-    margin: 20px auto;
-    box-shadow: 0 0 30px rgba(255, 153, 204, 0.6);
+    margin: 25px auto;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 153, 204, 0.6), 0 10px 20px rgba(0,0,0,0.1);
     animation: heartbeat 3s ease-in-out infinite;
 }
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-.photo-frame video { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- Typewriter & Cursor --- */
+@keyframes heartbeat {
+    0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 153, 204, 0.6); }
+    50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 153, 204, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 153, 204, 0.6); }
+}
+
+.photo-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Typewriter Style --- */
 .message-text {
     font-size: 1.1rem;
-    min-height: 3.5em;
+    line-height: 1.6;
+    margin-bottom: 20px;
     color: #d63384;
-    margin-bottom: 10px;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    min-height: 3.2em; /* จองพื้นที่ไว้กันข้อความกระโดด */
 }
+
+/* Cursor กระพริบหลังข้อความ */
 .cursor {
     display: inline-block;
     width: 2px;
     background-color: #d63384;
     animation: blink 1s infinite;
 }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.lyric-text {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #ff508a;
+    opacity: 0;
+    transition: all 0.8s ease;
+    min-height: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Dancing Script', cursive;
+    text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+}
+
+.lyric-text.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.lyric-text:not(.visible) {
+    transform: translateY(10px) scale(0.95);
+}
+
+.timer {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #ff6699;
+    font-size: 1.1rem;
+    background: rgba(255, 240, 245, 0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.6);
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(214, 51, 132, 0.1);
+}
 
 /* --- Progress Bar --- */
 .progress-container {
@@ -154,59 +241,35 @@ h1 {
     height: 6px;
     background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
-    margin: 20px auto;
+    margin: 25px auto 5px auto;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.3);
 }
 .progress-bar {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, #ff99cc, #ff3366);
+    border-radius: 10px;
     transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
 }
 
-/* --- Love Button --- */
-#love-button {
-    background: none;
-    border: none;
-    font-size: 2.5rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-    outline: none;
-}
-#love-button:active { transform: scale(1.2); }
-
-.timer {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #ff6699;
-    background: rgba(255, 240, 245, 0.5);
-    padding: 8px 20px;
-    border-radius: 20px;
-    display: inline-block;
-}
-
-.lyric-text {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.2rem;
-    height: 2.5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.8s;
-}
-.lyric-text.visible { opacity: 1; }
 </style>
 </head>
 
 <body>
 
 <div class="heart-bg" id="heart-bg"></div>
-<audio id="bg-music"><source src="song.mp3" type="audio/mp3"></audio>
+
+<audio id="bg-music">
+    <source src="song.mp3" type="audio/mp3">
+</audio>
 
 <div id="welcome-screen">
     <h1>เค้ามีอะไรจะบอก</h1>
-    <p>ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
+    <p style="font-size: 1.2rem; text-shadow: 0 1px 1px rgba(255,255,255,0.5);">ใส่รหัส 6 ตัวนะที่รัก ❤️</p>
+
     <div class="pin-container">
         <input type="password" maxlength="1" inputmode="numeric">
         <input type="password" maxlength="1" inputmode="numeric">
@@ -215,24 +278,25 @@ h1 {
         <input type="password" maxlength="1" inputmode="numeric">
         <input type="password" maxlength="1" inputmode="numeric">
     </div>
-    <p id="error-text" style="color:red"></p>
+
+    <p id="error-text"></p>
 </div>
 
 <div id="main-content">
     <div class="container">
         <h1>Happy 6 Months!</h1>
+
         <div class="photo-frame">
             <video src="mylove.mp4" autoplay loop muted playsinline></video>
         </div>
+
         <p class="message-text" id="typing-text"></p>
+
         <div id="lyric-text" class="lyric-text"></div>
         
         <div class="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
-
-        <button id="love-button">💖</button>
-        <p style="font-size: 0.7rem; margin-top: -10px;">กดรับความรักตรงนี้สิ</p>
 
         <div class="timer" id="timer"></div>
     </div>
@@ -242,15 +306,39 @@ h1 {
 const correctPassword = "250625";
 const inputs = document.querySelectorAll(".pin-container input");
 const music = document.getElementById("bg-music");
+const lyricEl = document.getElementById("lyric-text");
+const welcomeScreen = document.getElementById("welcome-screen");
+const mainContent = document.getElementById("main-content");
+const errorText = document.getElementById("error-text");
 const progressBar = document.getElementById("progress-bar");
-const typingText = document.getElementById("typing-text");
+
+// --- Floating Hearts Animation ---
+const heartBg = document.getElementById('heart-bg');
+const heartSymbols = ['❤️', '💖', '💗', '💓', '💕'];
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    heart.style.animationDuration = (Math.random() * 5 + 4) + 's';
+    heart.style.animationDelay = Math.random() * 2 + 's';
+    heartBg.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 9000);
+}
+setInterval(createHeart, 800);
 
 // --- Input Logic ---
 inputs[0].focus();
 inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
+        input.value = input.value.replace(/\D/g, '');
         if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
-        if ([...inputs].map(inp => inp.value).join("").length === 6) checkPin();
+        checkPin();
     });
     input.addEventListener("keydown", e => {
         if (e.key === "Backspace" && !input.value && i > 0) inputs[i - 1].focus();
@@ -259,111 +347,163 @@ inputs.forEach((input, i) => {
 
 function checkPin() {
     const pin = [...inputs].map(i => i.value).join("");
-    if (pin === correctPassword) {
-        document.getElementById("welcome-screen").style.opacity = 0;
-        setTimeout(openGift, 1000);
-    } else {
-        document.getElementById("error-text").innerText = "รหัสผิดอะ ลองใหม่นะ 🥺";
-        inputs.forEach(i => i.value = "");
-        inputs[0].focus();
-    }
-}
-
-function openGift() {
-    document.getElementById("welcome-screen").style.display = "none";
-    const main = document.getElementById("main-content");
-    main.style.display = "flex";
-    setTimeout(() => {
-        main.style.opacity = 1;
-        music.play();
-        startTypewriter();
-        startLyrics();
-    }, 100);
-}
-
-// --- Typewriter Effect ---
-const message = "ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️";
-let charIndex = 0;
-function startTypewriter() {
-    typingText.innerHTML = '<span class="cursor"></span>';
-    function type() {
-        if (charIndex < message.length) {
-            let char = message.charAt(charIndex);
-            if (message.substring(charIndex, charIndex + 4) === "<br>") {
-                char = "<br>"; charIndex += 3;
-            }
-            document.querySelector('.cursor').insertAdjacentHTML('beforebegin', char);
-            charIndex++;
-            setTimeout(type, 100);
+    if (pin.length === 6) {
+        if (pin === correctPassword) {
+            errorText.innerText = "";
+            inputs.forEach(i => i.blur());
+            playExplosionEffect();
+            setTimeout(openGift, 800);
+        } else {
+            errorText.innerText = "รหัสผิดอะ ลองใหม่ซิ 🥺";
+            inputs.forEach(i => { i.value = ""; });
+            inputs[0].focus();
+            setTimeout(() => errorText.innerText = "", 2000);
         }
     }
+}
+
+// --- Heart Explosion ---
+function playExplosionEffect() {
+    const container = document.createElement('div');
+    container.classList.add('explosion-container');
+    welcomeScreen.appendChild(container);
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('exploding-heart');
+        heart.innerHTML = '💖';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 150 + 50;
+        const x = Math.cos(angle) * distance + 'px';
+        const y = Math.sin(angle) * distance + 'px';
+        heart.style.setProperty('--x', x);
+        heart.style.setProperty('--y', y);
+        heart.style.animationDelay = Math.random() * 0.3 + 's';
+        container.appendChild(heart);
+    }
+    setTimeout(() => container.remove(), 1000);
+}
+
+// --- Typewriter Effect Logic ---
+// ** แก้ไขข้อความตรงนี้ได้เลยครับ **
+const messageToType = "ขอบคุณที่อยู่ข้างกันมาตลอด 6 เดือนนะ<br>รักเธอที่สุดในโลกเลย ❤️";
+const typingSpeed = 80; // ความเร็วในการพิมพ์ (ms)
+let typeIndex = 0;
+
+function startTypewriter() {
+    const textElement = document.getElementById("typing-text");
+    
+    // สร้าง cursor รอไว้
+    textElement.innerHTML = '<span class="cursor">&nbsp;</span>';
+    
+    function type() {
+        if (typeIndex < messageToType.length) {
+            let char = messageToType.charAt(typeIndex);
+            
+            // เช็คว่าเป็น tag <br> หรือไม่
+            if (messageToType.substring(typeIndex, typeIndex + 4) === "<br>") {
+                char = "<br>";
+                typeIndex += 3; // ข้ามตัวอักษรของ tag br ไป
+            }
+            
+            // แทรกตัวอักษรก่อนหน้า cursor
+            const cursor = textElement.querySelector('.cursor');
+            cursor.insertAdjacentHTML('beforebegin', char);
+            
+            typeIndex++;
+            setTimeout(type, typingSpeed);
+        }
+    }
+    
     type();
 }
 
-// --- Love Burst ---
-document.getElementById('love-button').addEventListener('click', function(e) {
-    for (let i = 0; i < 12; i++) {
-        const h = document.createElement('div');
-        h.innerHTML = ['❤️','💖','💕'][Math.floor(Math.random()*3)];
-        h.style.position = 'fixed';
-        h.style.left = e.clientX + 'px';
-        h.style.top = e.clientY + 'px';
-        h.style.pointerEvents = 'none';
-        document.body.appendChild(h);
-        
-        const destX = (Math.random() - 0.5) * 400;
-        const destY = (Math.random() - 0.5) * 400;
-        
-        h.animate([
-            { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-            { transform: `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px)) scale(0)`, opacity: 0 }
-        ], { duration: 1000, easing: 'ease-out' }).onfinish = () => h.remove();
+// --- Transition to Main Content ---
+function openGift() {
+    welcomeScreen.style.opacity = 0;
+
+    setTimeout(() => {
+        welcomeScreen.style.display = "none";
+        mainContent.style.display = "flex";
+
+        requestAnimationFrame(() => {
+            mainContent.style.opacity = 1;
+
+            music.currentTime = 0;
+            music.volume = 0.6;
+            music.play().catch(e => console.log("Auto-play blocked:", e));
+
+            // เริ่มพิมพ์ข้อความหลังจากหน้าแสดงผลแล้วนิดหน่อย
+            setTimeout(startTypewriter, 1000);
+
+            resetLyrics();
+            setTimeout(startLyrics, LYRIC_INTRO_DELAY);
+        });
+    }, 1000);
+}
+
+// --- Lyrics Logic ---
+const LYRIC_INTRO_DELAY = 1500;
+const lyricsWithTiming = [
+    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", duration: 4200 },
+    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", duration: 4500 },
+    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด", duration: 5300 },
+    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", duration: 5400 }
+];
+
+let lyricIndex = 0;
+let lyricTimer = null;
+
+function resetLyrics() {
+    if (lyricTimer) clearTimeout(lyricTimer);
+    lyricIndex = 0;
+    lyricEl.textContent = "";
+    lyricEl.classList.remove("visible");
+}
+
+function startLyrics() {
+    if (lyricIndex >= lyricsWithTiming.length) return;
+    lyricEl.textContent = lyricsWithTiming[lyricIndex].text;
+    lyricEl.classList.add("visible");
+    lyricTimer = setTimeout(() => {
+        lyricEl.classList.remove("visible");
+        lyricIndex++;
+        lyricTimer = setTimeout(startLyrics, 800);
+    }, lyricsWithTiming[lyricIndex].duration);
+}
+
+music.addEventListener("ended", () => {
+    resetLyrics();
+    music.currentTime = 0;
+    progressBar.style.width = "0%";
+    music.play();
+    setTimeout(startLyrics, LYRIC_INTRO_DELAY);
+});
+
+music.addEventListener("timeupdate", () => {
+    if (music.duration) {
+        const progressPercent = (music.currentTime / music.duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
     }
 });
 
-// --- Music & Lyrics ---
-music.addEventListener("timeupdate", () => {
-    progressBar.style.width = (music.currentTime / music.duration * 100) + "%";
-});
+// --- Timer Logic ---
+const startDate = new Date(2025, 5, 25).getTime(); // 25 มิถุนา 2025
 
-const lyrics = [
-    { text: "เธอเพียงคนเดียวและเพียงเธอที่ต้องการ", time: 4200 },
-    { text: "ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ", time: 8700 },
-    { text: "นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไร", time: 14000 },
-    { text: "ทั้งหัวใจฉันมีเธอเพียงคนเดียว ❤️", time: 19400 }
-];
-
-function startLyrics() {
-    const el = document.getElementById("lyric-text");
-    lyrics.forEach(line => {
-        setTimeout(() => {
-            el.innerText = line.text;
-            el.classList.add("visible");
-            setTimeout(() => el.classList.remove("visible"), 3500);
-        }, line.time);
-    });
-}
-
-// --- Background Hearts ---
 setInterval(() => {
-    const h = document.createElement('div');
-    h.classList.add('heart');
-    h.innerHTML = '❤️';
-    h.style.left = Math.random() * 100 + 'vw';
-    document.getElementById('heart-bg').appendChild(h);
-    setTimeout(() => h.remove(), 6000);
-}, 800);
-
-// --- Timer ---
-const startDate = new Date(2025, 5, 25).getTime();
-setInterval(() => {
-    const d = Date.now() - startDate;
-    const days = Math.floor(d / 86400000);
-    const hrs = Math.floor((d % 86400000) / 3600000);
-    const mins = Math.floor((d % 3600000) / 60000);
-    const secs = Math.floor((d % 60000) / 1000);
-    document.getElementById("timer").innerText = `${days} วัน ${hrs} ชม. ${mins} น. ${secs} วิ`;
+    const now = Date.now();
+    const d = now - startDate;
+    if (d < 0) {
+         document.getElementById("timer").innerText = "Coming Soon...";
+         return;
+    }
+    const days = Math.floor(d / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((d % (1000 * 60)) / 1000);
+    document.getElementById("timer").innerText =
+        `${days} วัน ${hours} ชม. ${minutes} น. ${seconds} วิ`;
 }, 1000);
 </script>
+
 </body>
 </html>
