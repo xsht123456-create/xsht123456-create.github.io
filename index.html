@@ -59,22 +59,29 @@ h1 {
 
 /* --- Welcome Screen --- */
 #welcome-screen {
-    position: absolute;   /* ⭐ แก้ fixed → absolute */
+    position: fixed;      /* ⭐ ต้องใช้ fixed เพื่อครอบเต็มจริง */
     inset: 0;
-    min-height: 100vh;    /* ⭐ ให้กินพื้นที่จอจริง */
     width: 100%;
+    min-height: 100vh;
+    
     background: rgba(255, 204, 221, 0.6);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+
     z-index: 100;
     transition: opacity 1s ease-in-out;
+
     padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
     box-sizing: border-box;
+
+    overflow-y: auto;   /* ⭐ สำคัญมาก — ป้องกันหลุดขอบเวลาเนื้อหายาว */
+    -webkit-overflow-scrolling: touch;
 }
 
 
