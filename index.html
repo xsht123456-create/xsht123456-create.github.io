@@ -2,484 +2,719 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Hello world</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ครบรอบ 1 ปี</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Sarabun:wght@300;400&display=swap" rel="stylesheet">
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night:      #070b14;
+  --deep:       #0f1726;
+  --moon:       #ddeeff;
+  --moonlit:    #a8c4e8;
+  --silver:     #ccddf5;
+  --mist:       #4a6fa0;
+  --text-main:  #e8f2ff;
+  --text-soft:  rgba(200,220,255,0.6);
+}
 
 html, body {
-            
-    min-height: 100vh;              
-    margin: 0;
-    font-family: 'Sarabun', sans-serif;
-    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%);
-    background-attachment: fixed;   
-    color: #d63384;
-    position: relative;
-    overflow-x: hidden;         
-    overflow-y: auto;           
-    -webkit-tap-highlight-color: transparent;
+  min-height: 100vh;
+  font-family: 'Sarabun', sans-serif;
+  background: var(--night);
+  color: var(--text-main);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+/* ── SCENE CANVAS (moon + stars) ── */
+#scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
-
-.heart-bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-.heart {
-    position: absolute;
-    bottom: -10vh;
-    font-size: 20px;
-    color: #ff99cc;
-    opacity: 0.6;
-    animation: float 6s linear infinite;
-}
-@keyframes float {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
-    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+/* ── PETAL PARTICLES ── */
+#petals {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
-
+/* ── LOCK SCREEN ── */
 #welcome-screen {
-    position: fixed;     
-    inset: 0;
-    width: 100%;
-    min-height: 100vh;
-    
-    background: rgba(255, 204, 221, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    z-index: 100;
-    transition: opacity 1s ease-in-out;
-
-    padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
-    box-sizing: border-box;
-
-    overflow-y: auto;  
-    -webkit-overflow-scrolling: touch;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+  transition: opacity 1.4s ease;
+  background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(100,140,200,0.12) 0%, transparent 70%),
+              linear-gradient(180deg, #080c18 0%, #0a0f1e 100%);
+}
+#welcome-screen.keyboard-open {
+  justify-content: flex-start;
+  padding-top: 8vh;
 }
 
+/* moon glow ring behind the "1" */
+.lock-moon-ring {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lock-moon-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,196,232,0.18) 30%, transparent 70%);
+  animation: halo 5s ease-in-out infinite;
+}
+@keyframes halo {
+  0%,100% { transform: scale(1);   opacity: 0.7; }
+  50%      { transform: scale(1.12); opacity: 1;   }
+}
+.lock-year-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 7rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--moon);
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(168,196,232,0.6), 0 0 80px rgba(100,150,220,0.3);
+  position: relative;
+  z-index: 1;
+}
 
+.lock-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.22em;
+  color: var(--moonlit);
+  opacity: 0.75;
+  margin-bottom: 36px;
+}
 
-#welcome-screen.keyboard-open {
-    justify-content: flex-start;
-    padding-top: 10vh;
+.lock-prompt {
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 14px;
 }
 
 .pin-container {
-    display: flex;
-    gap: 12px;
-    margin: 30px 0;
+  display: flex;
+  gap: 10px;
 }
-
 .pin-container input {
-    width: 50px;
-    height: 60px;
-    font-size: 2rem;
-    text-align: center;
-    border-radius: 12px;
-    border: 2px solid rgba(255, 128, 191, 0.5);
-    outline: none;
-    background-color: rgba(255, 245, 248, 0.8);
-    color: #d63384;
+  width: 44px;
+  height: 52px;
+  font-size: 1.6rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(168,196,232,0.35);
+  color: var(--moon);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-text-security: disc;
 }
+.pin-container input:focus { border-color: var(--moonlit); }
 
 #error-text {
-    color: #ff3333;
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 1.5em;
+  min-height: 1.4em;
+  margin-top: 14px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: #90b8e8;
 }
 
-
-.explosion-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 101;
+/* bloom burst on unlock */
+.bloom-container {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  z-index: 110;
 }
-.exploding-heart {
-    position: absolute;
-    font-size: 24px;
-    color: #ff3366;
-    animation: explode 0.8s ease-out forwards;
+.bloom-dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--moonlit);
+  animation: bloom-fly 1s ease-out forwards;
 }
-@keyframes explode {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+@keyframes bloom-fly {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--bx), var(--by)) scale(0); opacity: 0; }
 }
 
-
+/* ── MAIN CONTENT ── */
 #main-content {
-    display: none;
-    opacity: 0;
-    min-height: 100vh; 
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1.5s ease-in-out;
-    position: relative;
-    z-index: 50;
-    padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
-    box-sizing: border-box;
-    background: linear-gradient(135deg, #ffe6e6 0%, #ffcce0 100%); 
+  display: none;
+  opacity: 0;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 2s ease;
+  position: relative;
+  z-index: 50;
+  padding: 40px 20px calc(48px + env(safe-area-inset-bottom));
 }
 
-.container {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 40px 30px;
-    border-radius: 30px;
-    width: 100%;
-    max-width: 420px; 
-    text-align: center;
-    box-sizing: border-box;
-    margin: 0 auto;
+.card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
 }
 
+/* eyebrow */
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+}
+
+/* big year display */
+.main-year {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5.5rem, 22vw, 8rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--moon);
+  line-height: 0.85;
+  text-shadow: 0 0 60px rgba(168,196,232,0.5), 0 0 120px rgba(100,150,220,0.2);
+}
+.main-year-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(0.85rem, 3vw, 1.1rem);
+  color: var(--moonlit);
+  opacity: 0.65;
+  letter-spacing: 0.25em;
+  margin-top: 6px;
+}
+
+/* hairline */
+.rule {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, var(--mist), transparent);
+  margin: 20px auto;
+}
+
+/* photo */
 .photo-frame {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 6px solid rgba(255, 153, 204, 0.8);
-    margin: 25px auto;
-    animation: heartbeat 3s ease-in-out infinite;
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(168,196,232,0.3);
+  margin: 0 auto 6px;
+  box-shadow:
+    0 0 0 8px rgba(100,140,200,0.06),
+    0 0 50px rgba(100,140,200,0.18);
+  animation: float-frame 6s ease-in-out infinite;
 }
-
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+@keyframes float-frame {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
 }
-
 .photo-frame video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%; height: 100%;
+  object-fit: cover;
 }
 
-
+/* message */
 .message-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    min-height: 3.2em;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  line-height: 2;
+  color: rgba(220,235,255,0.8);
+  min-height: 4em;
+  padding: 0 8px;
 }
-
 .cursor {
-    display: inline-block;
-    width: 2px;
-    background-color: #d63384;
-    animation: blink 1s infinite;
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background: var(--moonlit);
+  vertical-align: middle;
+  animation: blink 1.1s infinite;
 }
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0; }
 }
 
+/* lyric */
 .lyric-text {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #ff508a;
-    opacity: 0;
-    transition: all 0.8s ease;
-    min-height: 2.5em;
-    font-family: 'Dancing Script', cursive;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 3.8vw, 1.3rem);
+  color: var(--silver);
+  min-height: 2.8em;
+  line-height: 1.8;
+  white-space: pre-line;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1s ease, transform 1s ease;
+  padding: 0 12px;
 }
 .lyric-text.visible {
-    opacity: 1;
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* progress */
+.progress-wrap {
+  width: 70%;
+  margin: 22px auto 0;
+  position: relative;
+  height: 1px;
+  background: rgba(168,196,232,0.15);
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--mist), var(--moonlit));
+  transition: width 0.4s linear;
+}
+.progress-gem {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--moon);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--moonlit);
+  transition: left 0.4s linear;
+}
+
+/* timer */
 .timer {
-    margin-top: 20px;
-    font-weight: bold;
-    color: #ff6699;
+  margin-top: 16px;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-soft);
+  text-transform: uppercase;
 }
 
-
-.progress-container {
-    width: 80%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 10px;
-    margin: 25px auto 5px auto;
-    overflow: hidden;
+/* ── RESPONSIVE ── */
+@media (max-width: 380px) {
+  .pin-container input { width: 37px; height: 46px; font-size: 1.4rem; }
+  .pin-container { gap: 7px; }
+  .lock-year-num { font-size: 5.5rem; }
 }
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #ff99cc, #ff3366);
+@media (max-height: 620px) {
+  .photo-frame { width: 120px; height: 120px; }
+  .main-year   { font-size: 4.5rem; }
+  .rule        { height: 24px; }
 }
 
-
-@media (max-width: 480px) {
-    h1 { font-size: 2.3em; }
-    .container { padding: 28px 18px; }
-    .photo-frame { width:150px; height:150px; }
-    .message-text { font-size:1rem; }
-    .lyric-text { font-size:1.1rem; }
-    .pin-container { gap: 8px; }
-    .pin-container input {
-        width: 42px;
-        height: 52px;
-        font-size: 1.6rem;
-    }
-}
-
-
-@media (max-height: 640px) {
-    #welcome-screen { padding-top: 8vh; }
-    .container { padding: 22px 14px; }
-    .photo-frame { width:130px; height:130px; margin:18px auto; }
-    h1 { font-size: 2em; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
 </style>
 </head>
-
 <body>
 
-<div class="heart-bg" id="heart-bg"></div>
+<canvas id="scene"></canvas>
+<canvas id="petals"></canvas>
+<audio id="bg-music"><source src="song.mp3" type="audio/mp3"></audio>
 
-<audio id="bg-music">
-    <source src="song.mp3" type="audio/mp3">
-</audio>
-
+<!-- LOCK SCREEN -->
 <div id="welcome-screen">
-    <h1>ปลดล็อกข้อความลับ</h1>
-    <p>ใส่รหัสผ่าน 6 ตัว</p>
+  <div class="lock-moon-ring">
+    <span class="lock-year-num">1</span>
+  </div>
+  <div class="lock-label">Year Together</div>
 
-    <div class="pin-container">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-        <input type="password" maxlength="1" inputmode="numeric">
-    </div>
-
-    <p id="error-text"></p>
+  <p class="lock-prompt">ใส่รหัสผ่าน 6 ตัว</p>
+  <div class="pin-container">
+    <input type="password" maxlength="1" inputmode="numeric">
+    <input type="password" maxlength="1" inputmode="numeric">
+    <input type="password" maxlength="1" inputmode="numeric">
+    <input type="password" maxlength="1" inputmode="numeric">
+    <input type="password" maxlength="1" inputmode="numeric">
+    <input type="password" maxlength="1" inputmode="numeric">
+  </div>
+  <p id="error-text"></p>
 </div>
 
+<!-- MAIN -->
 <div id="main-content">
-    <div class="container">
-        <h1>The Story of Us</h1>
+  <div class="card">
+    <p class="eyebrow">One Year Anniversary</p>
+    <div class="main-year">1</div>
+    <div class="main-year-label">ปีที่ผ่านมา</div>
+    <div class="rule"></div>
 
-        <div class="photo-frame">
-            <video src="mylove.mp4" autoplay loop muted playsinline></video>
-        </div>
-
-        <p class="message-text" id="typing-text"></p>
-        <div id="lyric-text" class="lyric-text"></div>
-
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-
-        <div class="timer" id="timer"></div>
+    <div class="photo-frame">
+      <video src="mylove.mp4" autoplay loop muted playsinline></video>
     </div>
+
+    <div class="rule"></div>
+
+    <p class="message-text" id="typing-text"></p>
+    <div class="rule"></div>
+    <div id="lyric-text" class="lyric-text"></div>
+
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-fill"></div>
+      <div class="progress-gem"  id="progress-gem"></div>
+    </div>
+    <div class="timer" id="timer"></div>
+  </div>
 </div>
 
 <script>
-const correctPassword = "250625";
-const inputs = document.querySelectorAll(".pin-container input");
-const music = document.getElementById("bg-music");
-const lyricEl = document.getElementById("lyric-text");
-const welcomeScreen = document.getElementById("welcome-screen");
-const mainContent = document.getElementById("main-content");
-const errorText = document.getElementById("error-text");
-const progressBar = document.getElementById("progress-bar");
+/* ─ CONFIG ─ */
+const CORRECT_PIN   = "250625";
+const START_DATE    = new Date(2025, 5, 25).getTime();
+const MESSAGE       = "365 วันที่ผ่านมา\nมีเธออยู่ข้าง ๆ ทุกวัน\nทำให้ทุกอย่างพิเศษกว่าเดิม";
+// Cue-point lyrics — synced to music currentTime (seconds)
+const LYRICS = [
+  { text: "ฉันยืนอยู่ตรงนี้ แม้มีผู้คนรายล้อมนับพัน\nช่างมันเพราะฉันไม่คิดมองใครอื่นเลย",  start: 0.0,  end: 12.5 },
+  { text: "ในคืนแสงจันทร์ส่อง ระยิบตา\nดวงดารา ดั่งดวงตานางฟ้าจ้องมอง",                    start: 13.5, end: 26.5 },
+  { text: "เป็นพยานในยามราตรีบรรเลงขับขาน\nเพลงรักเพื่อเรา ฉันขอมือเธอเต้นรำกับฉันคืนนี้", start: 27.5, end: 41.0 },
+];
 
+/* ─ SCENE CANVAS: moon + stars ─ */
+(function () {
+  const cv  = document.getElementById('scene');
+  const ctx = cv.getContext('2d');
+  let W, H;
 
-const heartBg = document.getElementById('heart-bg');
-const heartSymbols = ['❤️','💖','💗','💓','💕'];
-setInterval(() => {
-    const h = document.createElement('div');
-    h.className = 'heart';
-    h.textContent = heartSymbols[Math.floor(Math.random()*heartSymbols.length)];
-    h.style.left = Math.random()*100+'vw';
-    heartBg.appendChild(h);
-    setTimeout(()=>h.remove(),9000);
-},800);
+  const stars = Array.from({ length: 220 }, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random() * 1.1 + 0.2,
+    a: Math.random(),
+    da: (Math.random() * 0.004 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
+  }));
 
+  // Moon data
+  const MOON = { x: 0.72, y: 0.13, r: 0 }; // r set after resize
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+    MOON.r = Math.min(W, H) * 0.085;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // sky gradient
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0,   '#050812');
+    sky.addColorStop(0.5, '#08101f');
+    sky.addColorStop(1,   '#0d1628');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
+
+    // moon glow (big soft halo)
+    const mx = MOON.x * W, my = MOON.y * H, mr = MOON.r;
+    const halo = ctx.createRadialGradient(mx, my, mr * 0.6, mx, my, mr * 5);
+    halo.addColorStop(0,   'rgba(180,210,255,0.18)');
+    halo.addColorStop(0.4, 'rgba(100,150,220,0.06)');
+    halo.addColorStop(1,   'transparent');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(mx, my, mr * 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // moon disk
+    const disk = ctx.createRadialGradient(mx - mr*0.2, my - mr*0.2, mr*0.1, mx, my, mr);
+    disk.addColorStop(0,   '#eef4ff');
+    disk.addColorStop(0.5, '#d4e6fa');
+    disk.addColorStop(1,   '#b0cce8');
+    ctx.fillStyle = disk;
+    ctx.beginPath();
+    ctx.arc(mx, my, mr, 0, Math.PI * 2);
+    ctx.fill();
+
+    // moon shimmer ring
+    ctx.strokeStyle = 'rgba(200,225,255,0.25)';
+    ctx.lineWidth   = 1;
+    ctx.beginPath();
+    ctx.arc(mx, my, mr + 3, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // stars
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a > 1 || s.a < 0.05) s.da *= -1;
+      ctx.globalAlpha = s.a * 0.85;
+      ctx.fillStyle   = '#cce0ff';
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    // moonlight reflection on ground (very subtle)
+    const ref = ctx.createLinearGradient(0, H * 0.8, 0, H);
+    ref.addColorStop(0, 'transparent');
+    ref.addColorStop(1, 'rgba(80,120,180,0.04)');
+    ctx.fillStyle = ref;
+    ctx.fillRect(0, H * 0.8, W, H * 0.2);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─ PETAL PARTICLES ─ */
+(function () {
+  const cv  = document.getElementById('petals');
+  const ctx = cv.getContext('2d');
+  let W, H;
+  const petals = [];
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function spawn() {
+    petals.push({
+      x:  Math.random() * W,
+      y:  -10,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: Math.random() * 0.6 + 0.3,
+      r:  Math.random() * 3 + 1.5,
+      a:  Math.random(),
+      da: (Math.random() * 0.003 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
+      life: 1,
+      dl:  0.0015 + Math.random() * 0.001,
+    });
+  }
+  setInterval(spawn, 900);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = petals.length - 1; i >= 0; i--) {
+      const p = petals[i];
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.a  += p.da;
+      if (p.a > 1 || p.a < 0) p.da *= -1;
+      p.life -= p.dl;
+      if (p.life <= 0 || p.y > H + 20) { petals.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.globalAlpha = p.life * p.a * 0.55;
+      ctx.translate(p.x, p.y);
+      // tiny elongated petal shape
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.r * 0.5, p.r, 0, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${210 + Math.random()*20}, 60%, 80%)`;
+      ctx.fill();
+      ctx.restore();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─ PIN LOGIC ─ */
+const inputs    = document.querySelectorAll('.pin-container input');
+const music     = document.getElementById('bg-music');
+const lyricEl   = document.getElementById('lyric-text');
+const welcomeSc = document.getElementById('welcome-screen');
+const mainEl    = document.getElementById('main-content');
+const errorEl   = document.getElementById('error-text');
+const progFill  = document.getElementById('progress-fill');
+const progGem   = document.getElementById('progress-gem');
 
 inputs[0].focus();
-inputs.forEach((input,i)=>{
-    input.addEventListener("input",()=>{
-        input.value = input.value.replace(/\D/g,'');
-        if(input.value && i<inputs.length-1) inputs[i+1].focus();
-        checkPin();
-    });
-    input.addEventListener("keydown",e=>{
-        if(e.key==="Backspace" && !input.value && i>0) inputs[i-1].focus();
-    });
-
-   
-    input.addEventListener("focus", () => {
-        welcomeScreen.classList.add("keyboard-open");
-       
-        setTimeout(() => {
-            input.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        }, 100);
-    });
-    input.addEventListener("blur",()=>{
-        setTimeout(()=>{
-            if(![...inputs].some(i=>i===document.activeElement)){
-                welcomeScreen.classList.remove("keyboard-open");
-            }
-        },100);
-    });
+inputs.forEach((inp, i) => {
+  inp.addEventListener('input', () => {
+    inp.value = inp.value.replace(/\D/g, '');
+    if (inp.value && i < inputs.length - 1) inputs[i + 1].focus();
+    checkPin();
+  });
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i - 1].focus();
+  });
+  inp.addEventListener('focus', () => {
+    welcomeSc.classList.add('keyboard-open');
+    setTimeout(() => inp.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+  });
+  inp.addEventListener('blur', () => {
+    setTimeout(() => {
+      if (![...inputs].some(el => el === document.activeElement))
+        welcomeSc.classList.remove('keyboard-open');
+    }, 100);
+  });
 });
 
-function checkPin(){
-    const pin=[...inputs].map(i=>i.value).join("");
-    if(pin.length===6){
-        if(pin===correctPassword){
-            playExplosionEffect();
-            setTimeout(openGift,800);
-        }else{
-            errorText.innerText="รหัสผิดอะ ลองใหม่ซิ";
-            inputs.forEach(i=>i.value="");
-            inputs[0].focus();
-            setTimeout(()=>errorText.innerText="",2000);
-        }
-    }
+function checkPin() {
+  const pin = [...inputs].map(i => i.value).join('');
+  if (pin.length !== 6) return;
+  if (pin === CORRECT_PIN) {
+    bloomEffect();
+    setTimeout(openGift, 900);
+  } else {
+    errorEl.innerText = 'รหัสผิดอะ ลองใหม่ซิ';
+    inputs.forEach(i => i.value = '');
+    inputs[0].focus();
+    setTimeout(() => errorEl.innerText = '', 2000);
+  }
 }
 
-
-function playExplosionEffect(){
-    const c=document.createElement('div');
-    c.className='explosion-container';
-    welcomeScreen.appendChild(c);
-    for(let i=0;i<20;i++){
-        const h=document.createElement('div');
-        h.className='exploding-heart';
-        h.textContent='💖';
-        const a=Math.random()*Math.PI*2;
-        const d=Math.random()*150+50;
-        h.style.setProperty('--x',Math.cos(a)*d+'px');
-        h.style.setProperty('--y',Math.sin(a)*d+'px');
-        c.appendChild(h);
-    }
-    setTimeout(()=>c.remove(),1000);
+function bloomEffect() {
+  const c = document.createElement('div');
+  c.className = 'bloom-container';
+  welcomeSc.appendChild(c);
+  for (let i = 0; i < 28; i++) {
+    const d = document.createElement('div');
+    d.className = 'bloom-dot';
+    const angle = (i / 28) * Math.PI * 2;
+    const dist  = 80 + Math.random() * 120;
+    d.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+    d.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+    // vary colors from silver to moonlit blue
+    const h = 200 + Math.floor(Math.random() * 30);
+    d.style.background = `hsl(${h},60%,80%)`;
+    d.style.animationDelay = (Math.random() * 0.2) + 's';
+    c.appendChild(d);
+  }
+  setTimeout(() => c.remove(), 1200);
 }
 
-
-const messageToType="You’re my favorite person<br>and my happy place<br>I love you more than words can say";
-let typeIndex=0;
-function startTypewriter(){
-    const el=document.getElementById("typing-text");
-    el.innerHTML='<span class="cursor"></span>';
-    (function type(){
-        if(typeIndex<messageToType.length){
-            let ch=messageToType.substring(typeIndex,typeIndex+4)==="<br>"?"<br>":messageToType[typeIndex];
-            typeIndex+=ch==="<br>"?4:1;
-            el.querySelector('.cursor').insertAdjacentHTML("beforebegin",ch);
-            setTimeout(type,80);
-        }
-    })();
+/* ─ OPEN ─ */
+function openGift() {
+  music.play().catch(() => {});
+  resetLyrics();
+  startLyricClock(0);
+  welcomeSc.style.opacity = '0';
+  setTimeout(() => {
+    welcomeSc.style.display = 'none';
+    mainEl.style.display = 'flex';
+    requestAnimationFrame(() => {
+      mainEl.style.opacity = '1';
+      setTimeout(startTypewriter, 900);
+    });
+  }, 1400);
 }
 
-
-const LYRIC_INTRO_DELAY=1500;
-const lyricsWithTiming=[
- {text:"เธอเพียงคนเดียวและเพียงเธอที่ต้องการ",duration:4200},
- {text:"ฉันจะทำทุกทุกทางด้วยวิญญาณและหัวใจ",duration:4500},
- {text:"นั่นคือฉันจะรักเธอไม่ว่าเป็นเมื่อไรสถานใด",duration:5300},
- {text:"ทั้งหัวใจฉันมีเธอเพียงคนเดียว",duration:5400}
-];
-let lyricIndex=0,lyricTimer=null;
-function resetLyrics(){
- if(lyricTimer)clearTimeout(lyricTimer);
- lyricIndex=0; lyricEl.textContent=""; lyricEl.classList.remove("visible");
-}
-function startLyrics(){
- if(lyricIndex>=lyricsWithTiming.length)return;
- lyricEl.textContent=lyricsWithTiming[lyricIndex].text;
- lyricEl.classList.add("visible");
- lyricTimer=setTimeout(()=>{
-   lyricEl.classList.remove("visible");
-   lyricIndex++;
-   setTimeout(startLyrics,800);
- },lyricsWithTiming[lyricIndex].duration);
+/* ─ TYPEWRITER ─ */
+let typeIdx = 0;
+function startTypewriter() {
+  const el = document.getElementById('typing-text');
+  el.innerHTML = '<span class="cursor"></span>';
+  typeIdx = 0;
+  (function type() {
+    if (typeIdx >= MESSAGE.length) return;
+    const ch = MESSAGE[typeIdx++];
+    const cur = el.querySelector('.cursor');
+    if (ch === '\n') cur.insertAdjacentHTML('beforebegin', '<br>');
+    else cur.insertAdjacentHTML('beforebegin', ch);
+    setTimeout(type, 85);
+  })();
 }
 
+/* ─ LYRICS (cue-point based) ─ */
+let activeLyricIdx = -1;
+let lyricClock = null;      // fallback clock in case timeupdate is slow
+let lyricClockStart = 0;    // wall-clock time when music started
+let lyricClockOffset = 0;   // music.currentTime at that moment
 
-function openGift(){
- welcomeScreen.style.opacity=0;
- setTimeout(()=>{
-   welcomeScreen.style.display="none";
-   mainContent.style.display="flex";
-   requestAnimationFrame(()=>{
-     mainContent.style.opacity=1;
-     music.play().catch(()=>{});
-     setTimeout(startTypewriter,1000);
-     resetLyrics();
-     setTimeout(startLyrics,LYRIC_INTRO_DELAY);
-   });
- },1000);
+function resetLyrics() {
+  activeLyricIdx = -1;
+  if (lyricClock) { clearInterval(lyricClock); lyricClock = null; }
+  lyricEl.classList.remove('visible');
+  setTimeout(() => { if (activeLyricIdx === -1) lyricEl.textContent = ''; }, 900);
 }
 
+function startLyricClock(musicCurrentTime) {
+  if (lyricClock) clearInterval(lyricClock);
+  lyricClockStart  = Date.now();
+  lyricClockOffset = musicCurrentTime;
+  lyricClock = setInterval(() => {
+    const t = lyricClockOffset + (Date.now() - lyricClockStart) / 1000;
+    updateLyrics(t);
+  }, 100);
+}
 
-music.addEventListener("ended",()=>{
- resetLyrics();
- music.currentTime=0;
- progressBar.style.width="0%";
- music.play();
- setTimeout(startLyrics,LYRIC_INTRO_DELAY);
+function updateLyrics(t) {
+  let found = -1;
+  for (let i = 0; i < LYRICS.length; i++) {
+    if (t >= LYRICS[i].start && t < LYRICS[i].end) { found = i; break; }
+  }
+  if (found === activeLyricIdx) return;
+  activeLyricIdx = found;
+  if (found === -1) {
+    lyricEl.classList.remove('visible');
+    setTimeout(() => { if (activeLyricIdx === -1) lyricEl.textContent = ''; }, 900);
+  } else {
+    lyricEl.textContent = LYRICS[found].text;
+    lyricEl.classList.add('visible');
+  }
+}
+
+/* ─ MUSIC ─ */
+music.addEventListener('ended', () => {
+  resetLyrics();
+  music.currentTime = 0;
+  progFill.style.width = '0%';
+  progGem.style.left   = '0%';
+  music.play();
+  startLyricClock(0);
+});
+music.addEventListener('timeupdate', () => {
+  if (!music.duration) return;
+  const p = (music.currentTime / music.duration * 100).toFixed(2) + '%';
+  progFill.style.width = p;
+  progGem.style.left   = p;
+  updateLyrics(music.currentTime);
+  // Re-sync clock offset every few seconds for accuracy
+  if (Math.round(music.currentTime * 10) % 20 === 0) {
+    startLyricClock(music.currentTime);
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) music.pause();
+  else if (music.currentTime > 0) music.play().catch(() => {});
 });
 
-music.addEventListener("timeupdate",()=>{
- if(music.duration){
-   progressBar.style.width=(music.currentTime/music.duration*100)+"%";
- }
-});
-
-
-document.addEventListener("visibilitychange",()=>{
- if(document.hidden) music.pause();
- else if(music.currentTime>0) music.play().catch(()=>{});
-});
-
-
-const startDate=new Date(2025,5,25).getTime();
-setInterval(()=>{
- const d=Date.now()-startDate;
- if(d<0)return;
- document.getElementById("timer").innerText=
- `${Math.floor(d/86400000)} วัน ${Math.floor(d%86400000/3600000)} ชม. ${Math.floor(d%3600000/60000)} น. ${Math.floor(d%60000/1000)} วิ`;
-},1000);
+/* ─ TIMER ─ */
+const timerEl = document.getElementById('timer');
+setInterval(() => {
+  const d    = Date.now() - START_DATE;
+  if (d < 0) return;
+  const days = Math.floor(d / 86400000);
+  const hrs  = Math.floor(d % 86400000 / 3600000);
+  const mins = Math.floor(d % 3600000  / 60000);
+  const secs = Math.floor(d % 60000    / 1000);
+  timerEl.textContent = `${days} วัน · ${hrs} ชม. · ${mins} น. · ${secs} วิ`;
+}, 1000);
 </script>
-
 </body>
 </html>
