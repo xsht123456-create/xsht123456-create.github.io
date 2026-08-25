@@ -1,591 +1,455 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>One Year Later</title>
 
-<link rel="preconnect"
-      href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Sarabun:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
-/* ==============================
-   RESET
-============================== */
+/* =====================================================
+   RESET / TOKENS
+===================================================== */
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --sky-top: #7fb8da;
+    --sky-mid: #a9d3e8;
+    --sky-bot: #cfe8f2;
+    --cream: #fbf7ec;
+    --paper: #fffdf6;
+    --ink: #2b3a42;
+    --muted: #5c6f78;
+    --tape: #ead9ae;
+    --gold: #d9b36b;
 }
 
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
-
-
-/* ==============================
-   BODY
-============================== */
+html, body { width: 100%; min-height: 100%; }
 
 body {
-
     font-family: 'Sarabun', sans-serif;
-
-    min-height: 100vh;
-
-    color: #283940;
-
+    color: var(--ink);
     overflow-x: hidden;
-
-    background:
-        radial-gradient(
-            ellipse at 50% 10%,
-            rgba(255,255,255,.45),
-            transparent 55%
-        ),
-        linear-gradient(
-            135deg,
-            #91bdd2,
-            #b8d8e7,
-            #9fc7da
-        );
-
     position: relative;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-bot) 100%);
 }
 
-
-/* ==============================
-   PAPER TEXTURE
-============================== */
-
+/* soft sun glow */
 body::before {
-
     content: "";
-
     position: fixed;
-
     inset: 0;
-
     pointer-events: none;
-
-    opacity: .13;
-
-    background-image:
-        repeating-linear-gradient(
-            0deg,
-            rgba(255,255,255,.5) 0px,
-            rgba(255,255,255,.5) 1px,
-            transparent 1px,
-            transparent 4px
-        ),
-        repeating-linear-gradient(
-            90deg,
-            rgba(60,90,100,.12) 0px,
-            rgba(60,90,100,.12) 1px,
-            transparent 1px,
-            transparent 5px
-        );
-
+    background: radial-gradient(ellipse 60% 35% at 50% 8%, rgba(255,255,255,.55), transparent 60%);
     z-index: 0;
 }
 
+/* =====================================================
+   CLOUDS
+===================================================== */
 
-/* ==============================
-   MAIN
-============================== */
+.cloud {
+    position: fixed;
+    background: #fff;
+    border-radius: 50%;
+    opacity: .8;
+    filter: blur(1px);
+    pointer-events: none;
+    z-index: 0;
+}
+.cloud::before, .cloud::after {
+    content: "";
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.c1 { width: 180px; height: 60px; top: 8%; left: -5%; animation: drift 70s linear infinite; }
+.c1::before { width: 100px; height: 100px; top: -50px; left: 20px; }
+.c1::after { width: 70px; height: 70px; top: -30px; left: 100px; }
+
+.c2 { width: 130px; height: 45px; top: 20%; right: -8%; opacity: .65; animation: drift 95s linear infinite reverse; }
+.c2::before { width: 75px; height: 75px; top: -38px; left: 15px; }
+.c2::after { width: 55px; height: 55px; top: -24px; left: 75px; }
+
+.c3 { width: 220px; height: 70px; top: 42%; left: -10%; opacity: .55; animation: drift 120s linear infinite; }
+.c3::before { width: 120px; height: 120px; top: -60px; left: 30px; }
+.c3::after { width: 90px; height: 90px; top: -40px; left: 130px; }
+
+@keyframes drift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(130vw); }
+}
+
+/* =====================================================
+   BIRDS
+===================================================== */
+
+.bird {
+    position: fixed;
+    width: 34px;
+    height: 14px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .75;
+}
+.bird svg { width: 100%; height: 100%; display: block; }
+
+.b1 { top: 14%; left: -5%; animation: fly 26s linear infinite; }
+.b2 { top: 11%; left: -12%; animation: fly 26s linear infinite 1.2s; transform: scale(.75); }
+.b3 { top: 30%; left: -8%; animation: fly 34s linear infinite 6s; transform: scale(.6); opacity: .55; }
+.b4 { top: 62%; right: -6%; animation: flyRev 30s linear infinite 3s; transform: scale(.85) scaleX(-1); }
+
+@keyframes fly {
+    from { transform: translateX(0) translateY(0); }
+    50%  { transform: translateX(60vw) translateY(-18px); }
+    to   { transform: translateX(125vw) translateY(0); }
+}
+@keyframes flyRev {
+    from { transform: translateX(0) translateY(0) scaleX(-1); }
+    50%  { transform: translateX(-60vw) translateY(-14px) scaleX(-1); }
+    to   { transform: translateX(-125vw) translateY(0) scaleX(-1); }
+}
+
+/* =====================================================
+   MAIN / CARD
+===================================================== */
 
 .main {
-
     min-height: 100vh;
-
-    width: 100%;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
-    padding: 40px 20px;
-
+    padding: 50px 20px;
     position: relative;
+    z-index: 2;
+}
 
+.card {
+    width: min(560px, 100%);
+    padding: 20px 20px 40px;
+    text-align: center;
+    animation: cardIn 1.1s ease both;
+}
+
+/* =====================================================
+   PAINTED TITLE (top)
+===================================================== */
+
+.top-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(3.6rem, 13vw, 6.2rem);
+    font-weight: 600;
+    line-height: .82;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+    text-shadow:
+        0 2px 0 rgba(43,58,66,.10),
+        0 10px 26px rgba(43,58,66,.18);
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--ink);
+    opacity: .85;
+    transform: rotate(-2deg);
+    margin-bottom: 26px;
+}
+
+/* =====================================================
+   POLAROID PHOTO
+===================================================== */
+
+.album {
+    width: min(340px, 82vw);
+    margin: 0 auto;
+    padding: 16px 16px 46px;
+    background: var(--cream);
+    box-shadow:
+        0 4px 10px rgba(43,70,80,.10),
+        0 22px 44px rgba(43,70,80,.22);
+    transform: rotate(1.5deg);
+    position: relative;
+}
+
+.tape {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 90px;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(234,217,174,.9), rgba(234,217,174,.7));
+    box-shadow: 0 2px 4px rgba(0,0,0,.08);
+}
+
+.photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background:
+        linear-gradient(160deg, #a9d3e8, #7fb8da 60%, #5f9dc2);
+    position: relative;
+}
+
+/* placeholder sky-inside-frame decoration until a real photo/video is added */
+.photo .mini-bird { position: absolute; width: 40px; opacity: .8; }
+.photo .mb1 { top: 22%; left: 18%; }
+.photo .mb2 { top: 34%; left: 55%; transform: scale(.7); }
+.photo .mb3 { top: 55%; left: 30%; transform: scale(.55); opacity: .6; }
+
+.photo img,
+.photo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
     z-index: 1;
 }
 
-
-/* ==============================
-   CARD
-============================== */
-
-.card {
-
-    width: min(560px, 100%);
-
+.photo-caption {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
     text-align: center;
-
-    padding: 35px 25px 45px;
-
-    animation: fadeIn 1s ease;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--muted);
 }
 
-
-/* ==============================
-   ONE YEAR
-============================== */
-
-.top-title {
-
-    font-family: 'Sarabun', sans-serif;
-
-    font-size: clamp(
-        3.5rem,
-        12vw,
-        6.5rem
-    );
-
-    font-weight: 300;
-
-    line-height: .8;
-
-    letter-spacing: -.07em;
-
-    color: #f5eedc;
-
-    text-transform: uppercase;
-
-    margin-bottom: 30px;
-
-    transform: rotate(-1deg);
-
-    text-shadow:
-        1px 1px 0 rgba(60,90,100,.12);
+.photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(rgba(255,255,255,.14), rgba(255,255,255,0));
+    z-index: 2;
 }
 
-
-/* ==============================
-   PHOTO FRAME
-============================== */
-
-.album {
-
-    width: min(350px, 82vw);
-
-    margin: 0 auto;
-
-    padding: 14px;
-
-    background: #f5eedc;
-
-    box-shadow:
-        0 18px 40px rgba(40,70,80,.18);
-
-    transform: rotate(-1deg);
-}
-
-
-/* ==============================
-   PHOTO
-============================== */
-
-.photo {
-
-    width: 100%;
-
-    aspect-ratio: 1 / 1;
-
-    overflow: hidden;
-
-    background: #aac7d6;
-
-    position: relative;
-}
-
-
-.photo img {
-
-    width: 100%;
-
-    height: 100%;
-
-    display: block;
-
-    object-fit: cover;
-}
-
-
-/* ==============================
-   LATER
-============================== */
+/* =====================================================
+   PAINTED TITLE (bottom)
+===================================================== */
 
 .bottom-title {
-
-    font-family: 'Sarabun', sans-serif;
-
-    font-size: clamp(
-        4rem,
-        13vw,
-        7rem
-    );
-
-    font-weight: 300;
-
-    line-height: .8;
-
-    letter-spacing: -.08em;
-
-    color: #283940;
-
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(3.8rem, 14vw, 6.6rem);
+    font-weight: 700;
+    line-height: .82;
+    letter-spacing: -0.01em;
+    color: var(--ink);
     text-transform: uppercase;
-
-    margin-top: 30px;
-
-    transform: rotate(-1deg);
+    margin-top: 28px;
+    transform: rotate(-1.5deg);
 }
 
-
-/* ==============================
-   DIVIDER
-============================== */
+/* =====================================================
+   DIVIDER / MESSAGE / DATE
+===================================================== */
 
 .line {
-
     width: 65px;
-
-    height: 1px;
-
-    background: rgba(40,57,64,.25);
-
-    margin: 28px auto;
+    height: 2px;
+    background: var(--gold);
+    opacity: .6;
+    margin: 26px auto;
+    border-radius: 2px;
 }
-
-
-/* ==============================
-   MESSAGE
-============================== */
 
 .message {
-
     max-width: 380px;
-
-    margin: auto;
-
-    font-size: 1rem;
-
+    margin: 0 auto;
+    font-size: 1.05rem;
     font-weight: 300;
-
     line-height: 2;
-
-    color: rgba(40,57,64,.82);
+    color: rgba(43,58,66,.85);
 }
-
-
-/* ==============================
-   DATE
-============================== */
 
 .date {
-
-    margin-top: 28px;
-
-    font-size: .7rem;
-
-    font-weight: 400;
-
-    letter-spacing: .18em;
-
-    color: rgba(40,57,64,.65);
+    margin-top: 26px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    letter-spacing: .04em;
+    color: var(--muted);
 }
 
-
-/* ==============================
+/* =====================================================
    MUSIC BUTTON
-============================== */
+===================================================== */
 
 .music {
-
     position: fixed;
-
     right: 22px;
-
     bottom: 22px;
-
-    width: 44px;
-
-    height: 44px;
-
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-
-    border: 1px solid rgba(40,60,65,.25);
-
+    border: 1px solid rgba(43,58,66,.25);
     background: rgba(255,255,255,.45);
-
-    color: #283940;
-
+    backdrop-filter: blur(8px);
+    color: var(--ink);
     cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 17px;
+    z-index: 10;
+    transition: transform .25s ease, background .25s ease;
+}
+.music:hover { transform: scale(1.06); background: rgba(255,255,255,.65); }
+.music:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-    font-size: 16px;
+/* =====================================================
+   ANIMATION / A11Y
+===================================================== */
 
-    z-index: 100;
-
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(25px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-
-/* ==============================
-   ANIMATION
-============================== */
-
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
 }
 
-
-/* ==============================
+/* =====================================================
    MOBILE
-============================== */
+===================================================== */
 
 @media (max-width: 500px) {
+    .main { padding: 30px 10px 40px; }
+    .card { padding: 15px 8px 30px; }
+    .album { width: 84vw; }
+    .message { padding: 0 12px; }
+}
 
-    .main {
-        padding: 25px 10px 40px;
-    }
-
-    .card {
-        padding: 25px 10px 35px;
-    }
-
-    .album {
-        width: 84vw;
-    }
-
+@media (max-width: 360px) {
+    .top-title { font-size: 3.3rem; }
+    .bottom-title { font-size: 3.6rem; }
 }
 
 </style>
-
 </head>
 
 
 <body>
 
+<!-- CLOUDS -->
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+
+<!-- BIRDS -->
+<div class="bird b1"><svg viewBox="0 0 34 14"><path d="M1 8 Q9 0 17 8 Q25 0 33 8" fill="none" stroke="#2b3a42" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="bird b2"><svg viewBox="0 0 34 14"><path d="M1 8 Q9 0 17 8 Q25 0 33 8" fill="none" stroke="#2b3a42" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="bird b3"><svg viewBox="0 0 34 14"><path d="M1 8 Q9 0 17 8 Q25 0 33 8" fill="none" stroke="#2b3a42" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="bird b4"><svg viewBox="0 0 34 14"><path d="M1 8 Q9 0 17 8 Q25 0 33 8" fill="none" stroke="#2b3a42" stroke-width="1.8" stroke-linecap="round"/></svg></div>
 
 <main class="main">
 
     <section class="card">
 
-
         <!-- ONE YEAR -->
-
-        <div class="top-title">
-            ONE YEAR
-        </div>
-
+        <div class="top-title">ONE<br>YEAR</div>
 
         <!-- PHOTO -->
-
         <div class="album">
-
+            <div class="tape"></div>
             <div class="photo">
-
-                <img
-                    src="mylove.jpg"
-                    alt="Our memory">
-
+                <img src="mylove.jpg" alt="">
+                <!-- <video src="mylove.mp4" autoplay muted loop playsinline></video> -->
             </div>
-
+            <div class="photo-caption">25.06.2025</div>
         </div>
-
 
         <!-- LATER -->
-
-        <div class="bottom-title">
-            LATER
-        </div>
-
+        <div class="bottom-title">LATER</div>
 
         <div class="line"></div>
 
-
+        <!-- MESSAGE -->
         <div class="message">
-
-            หนึ่งปีผ่านไปแล้ว<br>
-            แต่เรื่องราวของเรายังไม่จบ
-
+            A year has come and gone<br>
+            but our story's still unwritten<br>
+            Skies change color<br>
+            but this heart never did
         </div>
 
-
-        <div class="date">
-
-            25.06.2025
-            &nbsp;—&nbsp;
-            25.06.2026
-
-        </div>
-
+        <!-- DATE -->
+        <div class="date">25.06.2025 — 25.06.2026</div>
 
     </section>
 
 </main>
 
-
-<!-- ==============================
-     MUSIC
-============================== -->
-
-<button
-    class="music"
-    id="musicButton">
-
-    ♫
-
-</button>
-
-
-<audio
-    id="music"
-    src="song.mp3"
-    loop>
-</audio>
-
+<!-- MUSIC -->
+<button class="music" id="musicButton" aria-label="เล่น/หยุดเพลง">♫</button>
+<audio id="music" src="song.mp3" loop preload="auto"></audio>
 
 <script>
+const music = document.getElementById("music");
+const button = document.getElementById("musicButton");
 
-const music =
-    document.getElementById("music");
+let musicStarted = false;
 
-const button =
-    document.getElementById("musicButton");
+async function startMusic() {
+    if (musicStarted || !music.paused) return;
 
-
-/* ==============================
-   MUSIC BUTTON
-============================== */
-
-button.addEventListener(
-    "click",
-    async function(event) {
-
-        event.stopPropagation();
-
-        try {
-
-            if (music.paused) {
-
-                music.volume = 0.45;
-
-                await music.play();
-
-                button.textContent = "Ⅱ";
-
-            } else {
-
-                music.pause();
-
-                button.textContent = "♫";
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Music error:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* ==============================
-   FIRST CLICK
-============================== */
-
-document.addEventListener(
-    "click",
-    async function() {
-
-        if (music.paused) {
-
-            try {
-
-                music.volume = 0.45;
-
-                await music.play();
-
-                button.textContent = "Ⅱ";
-
-            } catch (error) {
-
-                console.log(
-                    "Autoplay blocked"
-                );
-
-            }
-
-        }
-
-    },
-    {
-        once: true
-    }
-);
-
-
-/* ==============================
-   MUSIC STATE
-============================== */
-
-music.addEventListener(
-    "play",
-    function() {
-
+    try {
+        music.volume = 0.45;
+        await music.play();
+        musicStarted = true;
         button.textContent = "Ⅱ";
-
+    } catch (error) {
+        console.log("Browser blocked autoplay:", error);
     }
-);
+}
 
+// Browser อนุญาตให้เล่นเสียงได้เมื่อมี user interaction
+document.addEventListener("pointerdown", startMusic, { once: true });
 
-music.addEventListener(
-    "pause",
-    function() {
+button.addEventListener("click", async (event) => {
+    event.stopPropagation();
 
-        button.textContent = "♫";
-
+    try {
+        if (music.paused) {
+            music.volume = 0.45;
+            await music.play();
+            musicStarted = true;
+            button.textContent = "Ⅱ";
+        } else {
+            music.pause();
+            button.textContent = "♫";
+        }
+    } catch (error) {
+        console.error("Music error:", error);
     }
-);
+});
 
+music.addEventListener("play", () => {
+    button.textContent = "Ⅱ";
+});
+
+music.addEventListener("pause", () => {
+    button.textContent = "♫";
+});
+
+music.addEventListener("error", () => {
+    console.error("ไม่พบหรือไม่สามารถโหลด song.mp3 ได้");
+});
 </script>
 
-
 </body>
-
 </html>
