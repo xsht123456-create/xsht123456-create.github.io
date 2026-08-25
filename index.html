@@ -1,10 +1,472 @@
-<!-- MUSIC -->
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>One Year Later</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+
+<style>
+
+/* ==============================
+   RESET
+============================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+
+/* ==============================
+   BODY
+============================== */
+
+body {
+
+    font-family: 'Sarabun', sans-serif;
+
+    min-height: 100vh;
+
+    color: #283940;
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 10%,
+            rgba(255,255,255,.45),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #91bdd2,
+            #b8d8e7,
+            #9fc7da
+        );
+
+    position: relative;
+}
+
+
+/* ==============================
+   PAPER TEXTURE
+============================== */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.5) 0px,
+            rgba(255,255,255,.5) 1px,
+            transparent 1px,
+            transparent 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(60,90,100,.12) 0px,
+            rgba(60,90,100,.12) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+
+    z-index: 0;
+}
+
+
+/* ==============================
+   MAIN
+============================== */
+
+.main {
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ==============================
+   CARD
+============================== */
+
+.card {
+
+    width: min(560px, 100%);
+
+    text-align: center;
+
+    padding: 35px 25px 45px;
+
+    animation: fadeIn 1s ease;
+}
+
+
+/* ==============================
+   ONE YEAR
+============================== */
+
+.top-title {
+
+    font-family: 'Sarabun', sans-serif;
+
+    font-size: clamp(
+        3.5rem,
+        12vw,
+        6.5rem
+    );
+
+    font-weight: 300;
+
+    line-height: .8;
+
+    letter-spacing: -.07em;
+
+    color: #f5eedc;
+
+    text-transform: uppercase;
+
+    margin-bottom: 30px;
+
+    transform: rotate(-1deg);
+
+    text-shadow:
+        1px 1px 0 rgba(60,90,100,.12);
+}
+
+
+/* ==============================
+   PHOTO FRAME
+============================== */
+
+.album {
+
+    width: min(350px, 82vw);
+
+    margin: 0 auto;
+
+    padding: 14px;
+
+    background: #f5eedc;
+
+    box-shadow:
+        0 18px 40px rgba(40,70,80,.18);
+
+    transform: rotate(-1deg);
+}
+
+
+/* ==============================
+   PHOTO
+============================== */
+
+.photo {
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    background: #aac7d6;
+
+    position: relative;
+}
+
+
+.photo img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* ==============================
+   LATER
+============================== */
+
+.bottom-title {
+
+    font-family: 'Sarabun', sans-serif;
+
+    font-size: clamp(
+        4rem,
+        13vw,
+        7rem
+    );
+
+    font-weight: 300;
+
+    line-height: .8;
+
+    letter-spacing: -.08em;
+
+    color: #283940;
+
+    text-transform: uppercase;
+
+    margin-top: 30px;
+
+    transform: rotate(-1deg);
+}
+
+
+/* ==============================
+   DIVIDER
+============================== */
+
+.line {
+
+    width: 65px;
+
+    height: 1px;
+
+    background: rgba(40,57,64,.25);
+
+    margin: 28px auto;
+}
+
+
+/* ==============================
+   MESSAGE
+============================== */
+
+.message {
+
+    max-width: 380px;
+
+    margin: auto;
+
+    font-size: 1rem;
+
+    font-weight: 300;
+
+    line-height: 2;
+
+    color: rgba(40,57,64,.82);
+}
+
+
+/* ==============================
+   DATE
+============================== */
+
+.date {
+
+    margin-top: 28px;
+
+    font-size: .7rem;
+
+    font-weight: 400;
+
+    letter-spacing: .18em;
+
+    color: rgba(40,57,64,.65);
+}
+
+
+/* ==============================
+   MUSIC BUTTON
+============================== */
+
+.music {
+
+    position: fixed;
+
+    right: 22px;
+
+    bottom: 22px;
+
+    width: 44px;
+
+    height: 44px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(40,60,65,.25);
+
+    background: rgba(255,255,255,.45);
+
+    color: #283940;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    z-index: 100;
+
+}
+
+
+/* ==============================
+   ANIMATION
+============================== */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 500px) {
+
+    .main {
+        padding: 25px 10px 40px;
+    }
+
+    .card {
+        padding: 25px 10px 35px;
+    }
+
+    .album {
+        width: 84vw;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main class="main">
+
+    <section class="card">
+
+
+        <!-- ONE YEAR -->
+
+        <div class="top-title">
+            ONE YEAR
+        </div>
+
+
+        <!-- PHOTO -->
+
+        <div class="album">
+
+            <div class="photo">
+
+                <img
+                    src="mylove.jpg"
+                    alt="Our memory">
+
+            </div>
+
+        </div>
+
+
+        <!-- LATER -->
+
+        <div class="bottom-title">
+            LATER
+        </div>
+
+
+        <div class="line"></div>
+
+
+        <div class="message">
+
+            หนึ่งปีผ่านไปแล้ว<br>
+            แต่เรื่องราวของเรายังไม่จบ
+
+        </div>
+
+
+        <div class="date">
+
+            25.06.2025
+            &nbsp;—&nbsp;
+            25.06.2026
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+<!-- ==============================
+     MUSIC
+============================== -->
+
 <button
     class="music"
-    id="musicButton"
-    aria-label="เล่น/หยุดเพลง">
+    id="musicButton">
+
     ♫
+
 </button>
+
 
 <audio
     id="music"
@@ -21,75 +483,55 @@ const music =
 const button =
     document.getElementById("musicButton");
 
-let musicStarted = false;
 
-
-/* =====================================================
-   START MUSIC
-===================================================== */
-
-async function startMusic() {
-
-    if (musicStarted) return;
-
-    try {
-
-        music.volume = 0.45;
-
-        await music.play();
-
-        musicStarted = true;
-
-        button.textContent = "Ⅱ";
-
-    } catch (error) {
-
-        console.log(
-            "Browser blocked autoplay:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   FIRST USER INTERACTION
-===================================================== */
-
-document.addEventListener(
-    "click",
-    startMusic,
-    {
-        once: true
-    }
-);
-
-document.addEventListener(
-    "touchstart",
-    startMusic,
-    {
-        once: true
-    }
-);
-
-
-/* =====================================================
+/* ==============================
    MUSIC BUTTON
-===================================================== */
+============================== */
 
 button.addEventListener(
     "click",
     async function(event) {
 
-        /*
-         * ป้องกัน click นี้ไปทำงานซ้ำ
-         * กับ document click
-         */
-
         event.stopPropagation();
 
+        try {
+
+            if (music.paused) {
+
+                music.volume = 0.45;
+
+                await music.play();
+
+                button.textContent = "Ⅱ";
+
+            } else {
+
+                music.pause();
+
+                button.textContent = "♫";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Music error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+/* ==============================
+   FIRST CLICK
+============================== */
+
+document.addEventListener(
+    "click",
+    async function() {
 
         if (music.paused) {
 
@@ -99,34 +541,28 @@ button.addEventListener(
 
                 await music.play();
 
-                musicStarted = true;
-
                 button.textContent = "Ⅱ";
 
             } catch (error) {
 
                 console.log(
-                    "Music cannot play:",
-                    error
+                    "Autoplay blocked"
                 );
 
             }
 
-        } else {
-
-            music.pause();
-
-            button.textContent = "♫";
-
         }
 
+    },
+    {
+        once: true
     }
 );
 
 
-/* =====================================================
-   UPDATE BUTTON
-===================================================== */
+/* ==============================
+   MUSIC STATE
+============================== */
 
 music.addEventListener(
     "play",
@@ -147,20 +583,9 @@ music.addEventListener(
     }
 );
 
-
-/* =====================================================
-   ERROR CHECK
-===================================================== */
-
-music.addEventListener(
-    "error",
-    function() {
-
-        console.error(
-            "ไม่พบไฟล์ song.mp3"
-        );
-
-    }
-);
-
 </script>
+
+
+</body>
+
+</html>
